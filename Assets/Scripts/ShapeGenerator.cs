@@ -9,7 +9,6 @@ public class ShapeGenerator
     ShapeSettings settings;
     NoiseFilter[] noiseFilters;
     public MinMax elevationMinMax;
-
     public void UpdateSettings(ShapeSettings settings)
     {
         this.settings = settings;
@@ -31,7 +30,7 @@ public class ShapeGenerator
             elevation += noiseFilters[i].Evaluate(pointOnUnitSphere); 
             }
         }
-        elevation = (float)Math.Floor(settings.planetRadius * (1 + (double)(elevation)));
+        elevation = (float)Math.Floor((settings.planetRadius) * (1 + (double)(elevation)));
         elevationMinMax.AddValue(elevation);
         return pointOnUnitSphere * elevation;
     }
