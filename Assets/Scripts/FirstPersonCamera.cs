@@ -17,11 +17,14 @@ public class FirstPersonCamera : MonoBehaviour
     private int[] lastHighlightedTriangleIndices;
     private Color originalColor = Color.white;
     private Color highlightColor = Color.red;
+    public Material highlightMaterial;
+    private float highlightIntensity = 0f;
 
     private void Start()
     {
         cameraComponent = GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
+        highlightMaterial.SetFloat("_highlightIntensity", highlightIntensity);
     }
 
     private void Update()
@@ -75,6 +78,9 @@ public class FirstPersonCamera : MonoBehaviour
                     colors[index] = highlightColor;
                 }
 
+                highlightIntensity = 1f;
+                highlightMaterial.SetFloat("_highlightIntensity", highlightIntensity);
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     float vertHeight1 = (vertices[vert1] - planetCenter).magnitude;
@@ -99,6 +105,11 @@ public class FirstPersonCamera : MonoBehaviour
                 mesh.RecalculateBounds();
                 meshFilter.mesh = mesh;
             }
+        }
+        else
+        {
+            highlightIntensity = 1f;
+            highlightMaterial.SetFloat("_highlightIntensity", highlightIntensity);
         }
     }
 
