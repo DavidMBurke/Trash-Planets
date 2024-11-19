@@ -35,11 +35,11 @@ public class Player : MonoBehaviour
         {
             moveDirection += -gravityDirection * planet.gravity * jumpForce * Time.deltaTime;
             rocketCooldown -= Time.deltaTime;
-        } 
+        }
         if (rocketCooldown < rocketMax && !Input.GetButton("Jump")) {
             rocketCooldown = Math.Min(rocketCooldown + Time.deltaTime, rocketMax);
         }
-        
+
 
         if (!isGrounded && planet != null)
         {
