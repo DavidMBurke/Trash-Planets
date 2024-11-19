@@ -17,6 +17,8 @@ TagManager:
   - 
   - 
   - 
+  - CullPlayer1
+  - CullPlayer2
   - 
   - 
   - 
@@ -25,10 +27,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Player1Cam
+  - Player2Cam
   - 
   - 
   - 
