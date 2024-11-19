@@ -39,7 +39,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: 0
+    m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   planetMaterial: {fileID: 2100000, guid: 6cbc7df8a978eba429f37fa67aee96f5, type: 2}
