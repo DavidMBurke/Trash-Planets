@@ -27,7 +27,5 @@ public class minimapscript : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * smoothSpeed);
         transform.LookAt(planetcenter);
 
-        // transform.rotation.z = Quaternion.Euler(90f, player.eulerAngles.y, 0f);
-
     }
 }
