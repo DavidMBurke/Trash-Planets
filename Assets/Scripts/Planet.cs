@@ -24,6 +24,8 @@ public class Planet : MonoBehaviour
     MeshFilter[] meshFilters;
     TerrainFace[] terrainFaces;
 
+    public Transform VelocityTransform;
+
     private void Start()
     {
         GeneratePlanet();
@@ -97,6 +99,12 @@ public class Planet : MonoBehaviour
     void GenerateColors()
     {
         colorGenerator.UpdateColors();
+    }
+
+    void Update()
+    {
+        transform.Translate(VelocityTransform.position);
+        transform.Rotate(VelocityTransform.rotation.eulerAngles);
     }
 
 }
