@@ -8,6 +8,7 @@ public class Building : MonoBehaviour
     private Vector3 velocity;
     public float gravityMultiplier = 1.0f; // Adjust to control fall speed
     public bool isGrounded;
+    public int cost = 5;
 
     void Start()
     {
@@ -22,7 +23,6 @@ public class Building : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawRay(transform.position, -gravityDirection * groundCheckDistance, Color.red);
         ApplyGravity();
         AlignToPlanet();
         MoveBuilding();

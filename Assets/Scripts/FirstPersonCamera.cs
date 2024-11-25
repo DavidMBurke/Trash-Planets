@@ -9,7 +9,7 @@ using UnityEngine.XR;
 
 public class FirstPersonCamera : MonoBehaviour
 {
-    public Transform playerBody;
+    public Player player;
     public Planet planet;
 
     private Camera playerCamera;
@@ -31,6 +31,11 @@ public class FirstPersonCamera : MonoBehaviour
     private bool canPlace;
     private int selectedBuildingIndex = 0;
 
+    // For refining logic
+    private bool isRefining;
+    private float refining_time_total = 3;
+    private float refining_time_current = 0;
+
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
@@ -40,18 +45,54 @@ public class FirstPersonCamera : MonoBehaviour
 
     private void Update()
     {
-        HandleMeshHighlighting();
+        HandleRefining();
+        if (isRefining) return;
+        HandleMining();
         HandleBuildingSelection();
         HandlePlacementPreview();
     }
 
-    private void LateUpdate()
+    /// <summary>
+    /// Refining logic
+    /// </summary>
+    private void HandleRefining()
     {
-                
+        if (player.trash_qty == 0)
+        {
+            isRefining = false;
+            refining_time_current = 0;
+            return;
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            isRefining = true;
+            refining_time_current += Time.deltaTime;
+            if (refining_time_current >= refining_time_total)
+            {
+                player.trash_qty -= 1;
+                player.building_mat_qty += 1;
+                refining_time_current = 0;
+            }
+        }
+        else
+        {
+            isRefining = false;
+            refining_time_current = 0;
+        }
     }
 
-    private void HandleMeshHighlighting()
+
+
+    /// <summary>
+    /// Mining Logic
+    /// </summary>
+    private void HandleMining()
     {
+        if (buildingPrefab != null)
+        {
+            return;
+        }
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
@@ -89,10 +130,19 @@ public class FirstPersonCamera : MonoBehaviour
 
         int[] triangles = mesh.triangles;
         int triangleIndex = hit.triangleIndex;
+        int vert1, vert2, vert3;
 
-        int vert1 = triangles[triangleIndex * 3];
-        int vert2 = triangles[triangleIndex * 3 + 1];
-        int vert3 = triangles[triangleIndex * 3 + 2];
+        try
+        {
+            vert1 = triangles[triangleIndex * 3];
+            vert2 = triangles[triangleIndex * 3 + 1];
+            vert3 = triangles[triangleIndex * 3 + 2];
+        } 
+        catch 
+        { 
+            return; 
+        }
+
         lastHighlightedTriangleIndices = new int[] { vert1, vert2, vert3 };
 
         foreach (int index in lastHighlightedTriangleIndices)
@@ -122,17 +172,21 @@ public class FirstPersonCamera : MonoBehaviour
 
             (int index, Vector3 worldPos, float height) highestVert = verts.OrderByDescending(x => x.height).First();
 
-            Vector3 modifiedWorldVert = MoveVertexTowardCenter(highestVert.worldPos, planetCenter, 1f);
+            (Vector3 modifiedWorldVert, bool successfulMine) = Mine(highestVert.worldPos, planetCenter, 1f);
 
-            vertices[highestVert.index] = meshTransform.InverseTransformPoint(modifiedWorldVert);
+            if (successfulMine)
+            {
+                vertices[highestVert.index] = meshTransform.InverseTransformPoint(modifiedWorldVert);
 
-            mesh.vertices = vertices;
-            mesh.RecalculateNormals();
-            mesh.RecalculateBounds();
-            meshFilter.mesh = mesh;
-            MeshCollider meshCollider = meshFilter.GetComponent<MeshCollider>();
-            meshCollider.sharedMesh = null;
-            meshCollider.sharedMesh = mesh;
+                mesh.vertices = vertices;
+                mesh.RecalculateNormals();
+                mesh.RecalculateBounds();
+                meshFilter.mesh = mesh;
+                MeshCollider meshCollider = meshFilter.GetComponent<MeshCollider>();
+                meshCollider.sharedMesh = null;
+                meshCollider.sharedMesh = mesh;
+                player.trash_qty += 1;
+            }
 
         }
 
@@ -149,7 +203,7 @@ public class FirstPersonCamera : MonoBehaviour
 
 
 
-    private Vector3 MoveVertexTowardCenter(Vector3 vertex, Vector3 center, float amount)
+    private (Vector3 newVertex, bool succesfulMine) Mine(Vector3 vertex, Vector3 center, float amount)
     {
         float minRadius = (float)Math.Floor((planet.shapeSettings.planetRadius));
         Vector3 directionToCenter = (center - vertex).normalized;
@@ -158,9 +212,9 @@ public class FirstPersonCamera : MonoBehaviour
 
         if (newDistance <= minRadius)
         {
-            return vertex;
+            return (vertex, false);
         }
-        return newVertex;
+        return (newVertex, true);
     }
 
     /// <summary>
@@ -199,7 +253,9 @@ public class FirstPersonCamera : MonoBehaviour
             previewBuilding.transform.position = hit.point + hit.normal * buildingPlacementVertOffset;
             previewBuilding.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
 
-            canPlace = !Physics.CheckBox(previewBuilding.transform.position, previewBuilding.GetComponent<Collider>().bounds.extents, previewBuilding.transform.rotation);
+            bool hasNoCollisions = !Physics.CheckBox(previewBuilding.transform.position, previewBuilding.GetComponent<Collider>().bounds.extents, previewBuilding.transform.rotation);
+            bool canAfford = previewBuilding.GetComponent<Building>().cost <= player.building_mat_qty;
+            bool canPlace = hasNoCollisions && canAfford;
 
             if (canPlace)
             {
@@ -256,6 +312,7 @@ public class FirstPersonCamera : MonoBehaviour
         placedBuilding.GetComponent<Renderer>().material = null;
 
         Building buildingComponent = placedBuilding.GetComponent<Building>();
+        player.building_mat_qty -= buildingComponent.cost;
         if (buildingComponent != null)
         {
             buildingComponent.planet = planet;
