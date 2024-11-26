@@ -36,6 +36,9 @@ public class FirstPersonCamera : MonoBehaviour
     private float refining_time_total = 3;
     private float refining_time_current = 0;
 
+    // For Button Interaction;
+    private bool isLookingAtButton;
+
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
@@ -47,6 +50,8 @@ public class FirstPersonCamera : MonoBehaviour
     {
         HandleRefining();
         if (isRefining) return;
+        HandleButtonInteraction();
+        if (isLookingAtButton) return;
         HandleMining();
         HandleBuildingSelection();
         HandlePlacementPreview();
@@ -57,7 +62,7 @@ public class FirstPersonCamera : MonoBehaviour
     /// </summary>
     private void HandleRefining()
     {
-        if (player.trash_qty == 0)
+        if (player.trashQty == 0)
         {
             isRefining = false;
             refining_time_current = 0;
@@ -70,7 +75,7 @@ public class FirstPersonCamera : MonoBehaviour
             refining_time_current += Time.deltaTime;
             if (refining_time_current >= refining_time_total)
             {
-                player.trash_qty -= 1;
+                player.trashQty -= 1;
                 player.building_mat_qty += 1;
                 refining_time_current = 0;
             }
@@ -185,7 +190,7 @@ public class FirstPersonCamera : MonoBehaviour
                 MeshCollider meshCollider = meshFilter.GetComponent<MeshCollider>();
                 meshCollider.sharedMesh = null;
                 meshCollider.sharedMesh = mesh;
-                player.trash_qty += 1;
+                player.trashQty += 1;
             }
 
         }
@@ -207,8 +212,6 @@ public class FirstPersonCamera : MonoBehaviour
             meshFilter.mesh.colors = (Color[])originalColors.Clone();
         }
     }
-
-
 
     private (Vector3 newVertex, bool succesfulMine) Mine(Vector3 vertex, Vector3 center, float amount)
     {
@@ -338,6 +341,34 @@ public class FirstPersonCamera : MonoBehaviour
             }
             renderer.materials = materials;
         }
+    }
+
+    /// Button interaction
+    /// 
+
+    private void HandleButtonInteraction()
+    {
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
+
+        BuildingButton button = hit.collider.GetComponent<BuildingButton>();
+        if (button == null) return;
+
+        if (!Input.GetMouseButton(0))
+        {
+            if (button.isPressed)
+            {
+                button.Depress();
+            }
+            return;
+        }
+
+        button.Press();
+        Building building = button.GetComponentInParent<Building>();
+        if (building == null) return;
+
+        building.HandlePlayerInteraction(player);
+        
     }
 }
 

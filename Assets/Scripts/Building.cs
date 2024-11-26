@@ -9,6 +9,7 @@ public class Building : MonoBehaviour
     public float gravityMultiplier = 1.0f; // Adjust to control fall speed
     public bool isGrounded;
     public int cost = 5;
+    protected Player interactingPlayer;
 
     void Start()
     {
@@ -95,5 +96,10 @@ public class Building : MonoBehaviour
                 velocity = Vector3.zero;
             }
         }
+    }
+
+    public void HandlePlayerInteraction(Player player)
+    {
+        interactingPlayer = player;
     }
 }
