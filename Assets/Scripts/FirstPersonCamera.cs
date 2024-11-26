@@ -190,11 +190,12 @@ public class FirstPersonCamera : MonoBehaviour
 
         }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            Vector3 planetCenter = planet.gameObject.transform.position;
-            VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
-        }
+        // For testing projectile trash mountain generation.
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    Vector3 planetCenter = planet.gameObject.transform.position;
+        //    VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
+        //}
 
         mesh.colors = colors;
     }
