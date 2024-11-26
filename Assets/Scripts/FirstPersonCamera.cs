@@ -22,7 +22,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     // For building placement logic
     public GameObject[] buildingPrefabs;
-    public GameObject buildingPrefab;
+    public GameObject selectedPrefab;
     public Material previewMaterial;
     public float maxPlacementDistance = 50f;
     public float buildingPlacementVertOffset = 0.1f;
@@ -89,7 +89,7 @@ public class FirstPersonCamera : MonoBehaviour
     /// </summary>
     private void HandleMining()
     {
-        if (buildingPrefab != null)
+        if (selectedPrefab != null)
         {
             return;
         }
@@ -190,6 +190,12 @@ public class FirstPersonCamera : MonoBehaviour
 
         }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 planetCenter = planet.gameObject.transform.position;
+            VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
+        }
+
         mesh.colors = colors;
     }
 
@@ -223,7 +229,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     private void HandlePlacementPreview()
     {
-        if (buildingPrefab == null)
+        if (selectedPrefab == null)
         {
             if (previewBuilding != null)
             {
@@ -235,10 +241,10 @@ public class FirstPersonCamera : MonoBehaviour
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (Physics.Raycast(ray, out RaycastHit hit, maxPlacementDistance, placementLayerMask))
         {
-            if (previewBuilding == null || previewBuilding.name != buildingPrefab.name + "(Clone)")
+            if (previewBuilding == null || previewBuilding.name != selectedPrefab.name + "(Clone)")
             {
                 if (previewBuilding != null) DestroyImmediate(previewBuilding, true);
-                previewBuilding = Instantiate(buildingPrefab);
+                previewBuilding = Instantiate(selectedPrefab);
 
                 Building buildingComponent = previewBuilding.GetComponent<Building>();
                 if (buildingComponent != null)
@@ -294,10 +300,10 @@ public class FirstPersonCamera : MonoBehaviour
 
         if (buildingPrefabs[selectedBuildingIndex] != null)
         {
-            buildingPrefab = buildingPrefabs[selectedBuildingIndex];
+            selectedPrefab = buildingPrefabs[selectedBuildingIndex];
         } else
         {
-            buildingPrefab = null;
+            selectedPrefab = null;
             if (previewBuilding != null)
             {
                 Destroy(previewBuilding);
@@ -308,7 +314,7 @@ public class FirstPersonCamera : MonoBehaviour
     }
     private void PlaceBuilding()
     {
-        GameObject placedBuilding = Instantiate(buildingPrefab, previewBuilding.transform.position, previewBuilding.transform.rotation);
+        GameObject placedBuilding = Instantiate(selectedPrefab, previewBuilding.transform.position, previewBuilding.transform.rotation);
         placedBuilding.GetComponent<Renderer>().material = null;
 
         Building buildingComponent = placedBuilding.GetComponent<Building>();
