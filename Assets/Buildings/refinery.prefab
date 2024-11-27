@@ -2393,6 +2393,12 @@ MonoBehaviour:
   button10: {fileID: 8341666519431034469}
   button100: {fileID: 9127772005797172399}
   buttonCollect: {fileID: 5984071331014308529}
+  trashQtyDisplay: {fileID: 4969242191324055591}
+  buildingMatQtyDisplay: {fileID: 7150231680125302629}
+  trashQty: 0
+  buildingMatQty: 0
+  processTime: 5
+  processTimer: 0
 --- !u!64 &-3558800172246066641
 MeshCollider:
   m_ObjectHideFlags: 0
