@@ -13,6 +13,7 @@ public class Refinery : Building
     public TextMeshProUGUI trashQtyDisplay;
     public TextMeshProUGUI buildingMatQtyDisplay;
     public int maxTrashQty = 100;
+    public int maxBuildingMatQty = 100;
     public int trashQty;
     public int buildingMatQty;
     public float processTime = 5;
@@ -52,8 +53,8 @@ public class Refinery : Building
 
     private void UpdateText()
     {
-        trashQtyDisplay.text = trashQty.ToString();
-        buildingMatQtyDisplay.text = buildingMatQty.ToString();
+        trashQtyDisplay.text = trashQty.ToString() + "/" + maxTrashQty.ToString();
+        buildingMatQtyDisplay.text = buildingMatQty.ToString() + "/" + maxBuildingMatQty.ToString();
     }
 
     private void AssignButtonFunctions()
@@ -66,7 +67,10 @@ public class Refinery : Building
 
     private void ProcessTrash()
     {
-        if (trashQty == 0) return;
+        if (trashQty == 0) 
+            return;
+        if (buildingMatQty == maxBuildingMatQty) 
+            return;
         processTimer += Time.deltaTime;
         if (processTimer > processTime) { 
             processTimer -= processTime;

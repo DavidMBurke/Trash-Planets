@@ -38,6 +38,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     // For Button Interaction;
     private bool isLookingAtButton;
+    private BuildingButton lastButton;
 
     private void Start()
     {
@@ -348,13 +349,24 @@ public class FirstPersonCamera : MonoBehaviour
 
     private void HandleButtonInteraction()
     {
+
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (!Physics.Raycast(ray, out RaycastHit hit)) return;
 
         BuildingButton button = hit.collider.GetComponent<BuildingButton>();
-        if (button == null) return;
+        if (lastButton != null && lastButton != button) { 
+            lastButton.RemoveHighlight();
+            if (lastButton.isPressed)
+            {
+                lastButton.Depress();
+            }
+        }
 
-        if (!Input.GetMouseButton(0))
+        if (button == null) return;
+        lastButton = button;
+        button.Highlight();
+
+        if (!Input.GetMouseButton(0) )
         {
             if (button.isPressed)
             {

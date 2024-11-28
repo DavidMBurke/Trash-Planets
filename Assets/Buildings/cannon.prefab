@@ -87,6 +87,7 @@ MonoBehaviour:
   groundCheckDistance: 0.5
   gravityMultiplier: 0.01
   isGrounded: 0
+  cost: 5
 --- !u!64 &1400116401745203658
 MeshCollider:
   m_ObjectHideFlags: 0
