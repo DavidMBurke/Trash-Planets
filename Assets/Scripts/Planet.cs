@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -107,4 +108,39 @@ public class Planet : MonoBehaviour
         transform.Rotate(VelocityTransform.rotation.eulerAngles);
     }
 
+    public List<MeshFilter> GetMeshFiltersInRadius(Vector3 position, float radius)
+    {
+        List<MeshFilter> meshFiltersInRadius = new List<MeshFilter>();
+
+        foreach (MeshFilter meshFilter in meshFilters)
+        {
+            if (meshFilter == null) continue;
+
+            Bounds meshBounds = meshFilter.mesh.bounds;
+            meshBounds = TransformBounds(meshFilter.transform, meshBounds);
+
+            if (BoundsIntersectsSphere(meshBounds, position, radius))
+            {
+                meshFiltersInRadius.Add(meshFilter);
+            }
+        }
+
+        return meshFiltersInRadius;
+    }
+
+    private Bounds TransformBounds(Transform transform, Bounds localBounds)
+    {
+        Vector3 center = transform.TransformPoint(localBounds.center);
+        Vector3 extents = localBounds.extents;
+        Vector3 worldExtents = Vector3.Scale(extents, transform.lossyScale);
+
+        return new Bounds(center, worldExtents * 2);
+    }
+
+    private bool BoundsIntersectsSphere(Bounds bounds, Vector3 sphereCenter, float sphereRadius)
+    {
+        Vector3 closestPoint = bounds.ClosestPoint(sphereCenter);
+        float distance = Vector3.Distance(closestPoint, sphereCenter);
+        return distance <= sphereRadius;
+    }
 }

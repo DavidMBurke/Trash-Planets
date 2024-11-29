@@ -177,8 +177,8 @@ public class FirstPersonCamera : MonoBehaviour
                         };
 
             (int index, Vector3 worldPos, float height) highestVert = verts.OrderByDescending(x => x.height).First();
-
-            (Vector3 modifiedWorldVert, bool successfulMine) = Mine(highestVert.worldPos, planetCenter, 1f);
+            
+            (Vector3 modifiedWorldVert, bool successfulMine) = VertexManipulator.Mine(planet, highestVert.worldPos, planetCenter, 1f);
 
             if (successfulMine)
             {
@@ -212,20 +212,6 @@ public class FirstPersonCamera : MonoBehaviour
         {
             meshFilter.mesh.colors = (Color[])originalColors.Clone();
         }
-    }
-
-    private (Vector3 newVertex, bool succesfulMine) Mine(Vector3 vertex, Vector3 center, float amount)
-    {
-        float minRadius = (float)Math.Floor((planet.shapeSettings.planetRadius));
-        Vector3 directionToCenter = (center - vertex).normalized;
-        Vector3 newVertex = vertex + directionToCenter * amount;
-        float newDistance = (float)Math.Floor((newVertex - center).magnitude);
-
-        if (newDistance <= minRadius)
-        {
-            return (vertex, false);
-        }
-        return (newVertex, true);
     }
 
     /// <summary>

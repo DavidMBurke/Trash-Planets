@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class VertexManipulator : MonoBehaviour
 {
@@ -121,5 +124,70 @@ public class VertexManipulator : MonoBehaviour
             queue.Enqueue(vertexIndex);
             visitedVertices.Add(vertexIndex);
         }
+    }
+
+    public static (Vector3 newVertex, bool succesfulMine) Mine(Planet planet, Vector3 vertex, Vector3 center, float amount)
+    {
+        float minRadius = (float)Math.Floor((planet.shapeSettings.planetRadius));
+        Vector3 directionToCenter = (center - vertex).normalized;
+        Vector3 newVertex = vertex + directionToCenter * amount;
+        float newDistance = (float)Math.Floor((newVertex - center).magnitude);
+
+        if (newDistance <= minRadius)
+        {
+            return (vertex, false);
+        }
+        return (newVertex, true);
+    }
+
+    public static bool AutoMine(MeshFilter meshFilter, Planet planet, Vector3 minerPosition, float radius)
+    {
+        Mesh mesh = meshFilter.mesh;
+        Vector3[] vertices = mesh.vertices;
+        Transform meshTransform = meshFilter.transform;
+        Vector3 planetCenter = planet.transform.position;
+
+        List<(int index, Vector3 worldPos, float height)> verticesInRange = new List<(int, Vector3, float)>();
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            Vector3 worldVertex = meshTransform.TransformPoint(vertices[i]);
+            float distanceToMiner = (worldVertex - minerPosition).magnitude;
+
+            if (distanceToMiner <= radius)
+            {
+                float vertexHeight = (worldVertex - planetCenter).magnitude;
+                verticesInRange.Add((i, worldVertex, vertexHeight));
+            }
+        }
+
+        if (verticesInRange.Count == 0)
+        {
+            return false;
+        }
+
+        var highestVertex = verticesInRange.OrderByDescending(v => v.height).First();
+
+        (Vector3 modifiedWorldVert, bool succesfulMine) = VertexManipulator.Mine(planet, highestVertex.worldPos, planetCenter, 1f);
+
+        if (succesfulMine)
+        {
+            vertices[highestVertex.index] = meshTransform.InverseTransformPoint(modifiedWorldVert);
+
+            mesh.vertices = vertices;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            meshFilter.mesh = mesh;
+
+            MeshCollider meshCollider = meshFilter.GetComponent<MeshCollider>();
+            if (meshCollider != null)
+            {
+                meshCollider.sharedMesh = null;
+                meshCollider.sharedMesh = mesh;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
