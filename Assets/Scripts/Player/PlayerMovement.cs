@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
 
-    //Controls 
+    //Controls
     //[Header("Player Controls")]
     //[SerializeField]
     //private PlayerInput playerControls;
@@ -40,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float downForce;
 
+    //Audio
+    // public AudioSource playerFootsteps;  // Reference to the player's AudioSource
+    // private bool was_moving83 = false;
 
     //Internal
     private Transform playerTransform;
@@ -62,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         this.playerTransform = this.gameObject.transform;
         this.playerRigidbody = this.gameObject.GetComponent<Rigidbody>();
         this.playerControls = this.gameObject.GetComponent<PlayerInput>();
+        // this.playerFootsteps = this.gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -74,11 +78,24 @@ public class PlayerMovement : MonoBehaviour
         applyGravity();
     }
 
+
+
     void movePlayer()
     {
         Vector2 rawInput = this.Move.ReadValue<Vector2>();
         Vector3 playerMoveInput = orientation.forward * rawInput.y + orientation.right * rawInput.x;
         playerRigidbody.AddForce(playerMoveInput * acceleration, ForceMode.Acceleration);
+
+        // bool is_moving = playerRigidbody.velocity.magnitude > maxSpeed / 2;
+        // bool is_moving23 = Time.time%4>2;
+        // if (is_moving23 != was_moving83) {
+        //     if (is_moving23) {
+        //         playerFootsteps.Play();
+        //     } else {
+        //         playerFootsteps.Pause();
+        //     }
+        // }
+        // was_moving83 = is_moving23;
 
         if (playerRigidbody.velocity.magnitude > maxSpeed)
         {
@@ -91,6 +108,17 @@ public class PlayerMovement : MonoBehaviour
             float playerRightVelocity = Vector3.Dot(playerRigidbody.velocity, orientation.right);
             playerRigidbody.velocity = playerRigidbody.velocity - slowDownFraction * (orientation.forward * playerForwardVelocity + orientation.right * playerRightVelocity);
         }
+
+        // // Play footsteps sound if the player is moving
+        // if (rawInput.magnitude > 0f && !playerFootsteps.isPlaying)
+        // {
+        //     playerFootsteps.Play();
+        // }
+        // // Stop the footsteps sound when the player stops moving
+        // else if (rawInput.magnitude == 0f && playerFootsteps.isPlaying)
+        // {
+        //     playerFootsteps.Stop();
+        // }
 
     }
 
