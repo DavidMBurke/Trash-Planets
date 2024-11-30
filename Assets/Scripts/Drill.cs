@@ -6,7 +6,8 @@ public class Drill : Building
 {
     public BuildingButton[] CollectionButtons;
     public int maxTrash = 100;
-    public int collectedTrash = 0;
+    public int minedTrash = 0;
+    public int storedTrash = 0;
     public float collectionTime = 5;
     public float elapsedTime = 0;
     public float radius = 10;
@@ -19,6 +20,11 @@ public class Drill : Building
     private void Update()
     {
         TryMineTrash();
+        while (minedTrash > GameSettings.minedTrashRatio)
+        {
+            minedTrash -= GameSettings.minedTrashRatio;
+            storedTrash += 1;
+        }
     }
 
     private void OnDrawGizmos()
@@ -37,13 +43,13 @@ public class Drill : Building
 
     private void TryMineTrash()
     {
-        if (collectedTrash >= maxTrash)
+        if (storedTrash >= maxTrash)
         {
             elapsedTime = 0;
             return;
         }
         elapsedTime += Time.deltaTime;
-        if (elapsedTime > collectionTime)
+        while (elapsedTime > collectionTime)
         {
             MineTrash();
             elapsedTime -= collectionTime;
@@ -60,7 +66,7 @@ public class Drill : Building
             bool success = VertexManipulator.AutoMine(meshFilter, planet, transform.position, radius);
             if (success)
             {
-                collectedTrash += 1;
+                minedTrash += 1;
                 break;
             }
         }
@@ -69,7 +75,7 @@ public class Drill : Building
 
     private void collectTrash()
     {
-        interactingPlayer.trashQty += collectedTrash;
-        collectedTrash = 0;
+        interactingPlayer.trashQty += minedTrash;
+        minedTrash = 0;
     }
 }

@@ -178,22 +178,7 @@ public class FirstPersonCamera : MonoBehaviour
 
             (int index, Vector3 worldPos, float height) highestVert = verts.OrderByDescending(x => x.height).First();
             
-            (Vector3 modifiedWorldVert, bool successfulMine) = VertexManipulator.Mine(planet, highestVert.worldPos, planetCenter, 1f);
-
-            if (successfulMine)
-            {
-                vertices[highestVert.index] = meshTransform.InverseTransformPoint(modifiedWorldVert);
-
-                mesh.vertices = vertices;
-                mesh.RecalculateNormals();
-                mesh.RecalculateBounds();
-                meshFilter.mesh = mesh;
-                MeshCollider meshCollider = meshFilter.GetComponent<MeshCollider>();
-                meshCollider.sharedMesh = null;
-                meshCollider.sharedMesh = mesh;
-                player.trashQty += 1;
-            }
-
+            VertexManipulator.MineNTimes(player, meshFilter, planet, triangleIndex, GameSettings.minedTrashRatio, 2 * GameSettings.minedTrashRatio);
         }
 
         // For testing projectile trash mountain generation.
