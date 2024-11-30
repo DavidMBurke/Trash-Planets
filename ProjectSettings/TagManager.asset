@@ -9,6 +9,7 @@ TagManager:
   - Drill
   - Refinery
   - Transporter
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - PlanetSurface
   - Water
   - UI
-  - 
+  - Interactables
   - 
   - 
   - 

@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
         //this.playerTransform.up = directionGravity.normalized;
 
         // Rotate the player to align with the gravity direction (so they stay upright)
-        float rotationSpeed = 2f;
+        //float rotationSpeed = 2f;
         Vector3 gravityDirection = (gravityPoint.position - transform.position).normalized;
         Quaternion targetRotation = Quaternion.FromToRotation(transform.up, -gravityDirection) * this.playerTransform.rotation;
         //this.playerTransform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
