@@ -855,6 +855,9 @@ MonoBehaviour:
   startingZ: 0.15
   depressedZ: 0.05
   isPressed: 0
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  renderer: {fileID: 0}
 --- !u!1 &3684528943243579881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1740,6 +1743,9 @@ MonoBehaviour:
   startingZ: 0.15
   depressedZ: 0.05
   isPressed: 0
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  renderer: {fileID: 0}
 --- !u!1 &7121427770144367848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,6 +2025,9 @@ MonoBehaviour:
   startingZ: 0.15
   depressedZ: 0.05
   isPressed: 0
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  renderer: {fileID: 0}
 --- !u!1 &8558489109296456749
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,6 +2173,9 @@ MonoBehaviour:
   startingZ: 0.15
   depressedZ: 0.05
   isPressed: 0
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  renderer: {fileID: 0}
 --- !u!1 &9025951227825113876
 GameObject:
   m_ObjectHideFlags: 0
@@ -2330,6 +2342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: refinery
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 46e4332388fb8cd4285f279e943567f8, type: 3}
+      propertyPath: m_TagString
+      value: Refinery
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2395,6 +2411,8 @@ MonoBehaviour:
   buttonCollect: {fileID: 5984071331014308529}
   trashQtyDisplay: {fileID: 4969242191324055591}
   buildingMatQtyDisplay: {fileID: 7150231680125302629}
+  maxTrashQty: 100
+  maxBuildingMatQty: 100
   trashQty: 0
   buildingMatQty: 0
   processTime: 5
