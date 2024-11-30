@@ -102,6 +102,7 @@ public class PlayerMovement : MonoBehaviour
             playerRigidbody.velocity = playerRigidbody.velocity.normalized * maxSpeed;
         }
 
+
         if (rawInput.magnitude < slowDownThreshold)
         {
             float playerForwardVelocity = Vector3.Dot(playerRigidbody.velocity, orientation.forward);
@@ -140,13 +141,22 @@ public class PlayerMovement : MonoBehaviour
     //This function sets the player upright with respect to the gravity object defined above
     void orientGravity()
     {
-        Vector3 directionGravity = this.playerTransform.position - gravityPoint.position;
-        this.playerTransform.up = directionGravity.normalized;
+        //This code was causing some weird effects, likely due to ambiguity with the up rotation
+        //Vector3 directionGravity = this.playerTransform.position - gravityPoint.position;
+        //this.playerTransform.up = directionGravity.normalized;
+
+        // Rotate the player to align with the gravity direction (so they stay upright)
+        float rotationSpeed = 2f;
+        Vector3 gravityDirection = (gravityPoint.position - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, -gravityDirection) * this.playerTransform.rotation;
+        //this.playerTransform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        this.playerTransform.rotation = targetRotation;
     }
 
     void applyGravity()
     {
-        playerRigidbody.AddForce(this.playerTransform.up * -1 * gravityForce, ForceMode.Acceleration);
+        Vector3 gravityDirection = (this.playerTransform.position - gravityPoint.position).normalized;
+        playerRigidbody.AddForce(gravityDirection * -1 * gravityForce, ForceMode.Acceleration);
     }
 
     Quaternion calculateVectorDifferenceRotation(Vector3 vec1, Vector3 vec2)
