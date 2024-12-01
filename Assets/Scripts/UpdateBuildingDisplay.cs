@@ -13,12 +13,6 @@ public class UpdateBuildingDisplay : MonoBehaviour
     void Start()
     {
         BuildingText = GetComponent<TextMeshProUGUI>();
-        if (BuildingText == null)
-        {
-            Debug.LogError("BuildingDisplay object is missing a TextMeshProUGUI component.");
-            return;
-        }
-
         cameraScript = Camera.GetComponent<FirstPersonCamera>();
     }
 

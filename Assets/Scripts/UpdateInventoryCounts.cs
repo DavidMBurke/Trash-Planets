@@ -28,7 +28,7 @@ public class UpdateInventoryCounts : MonoBehaviour
         int trash = playerScript.trashQty;
         int building_mats = playerScript.building_mat_qty;
 
-        InventoryText.text = $"Trash: {trash}\nBuilding Materials: {building_mats}";
+        InventoryText.text = $"Trash:\t\t\t{trash}\nBuilding Materials:\t{building_mats}";
         
     }
 }
