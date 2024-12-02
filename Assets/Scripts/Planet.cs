@@ -25,11 +25,18 @@ public class Planet : MonoBehaviour
     MeshFilter[] meshFilters;
     TerrainFace[] terrainFaces;
 
-    public Transform VelocityTransform;
+    public Vector3 velocity;
+    public Vector3 acceleration;
+    public Vector3 rotationalVelocity;
+
+    public GameObject otherPlanet;
+    public float G = 10;
+    public bool orbitToggle;
 
     private void Start()
     {
         GeneratePlanet();
+        updateAcceleration();
     }
 
     void Initialize()
@@ -104,8 +111,10 @@ public class Planet : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(VelocityTransform.position);
-        transform.Rotate(VelocityTransform.rotation.eulerAngles);
+        updateAcceleration();
+        velocity += acceleration;
+        transform.Translate(velocity);
+        transform.Rotate(rotationalVelocity);
     }
 
     public List<MeshFilter> GetMeshFiltersInRadius(Vector3 position, float radius)
@@ -142,5 +151,17 @@ public class Planet : MonoBehaviour
         Vector3 closestPoint = bounds.ClosestPoint(sphereCenter);
         float distance = Vector3.Distance(closestPoint, sphereCenter);
         return distance <= sphereRadius;
+    }
+
+    void updateAcceleration()
+    {
+        if (orbitToggle) {
+            // Debug.Log("Our pose: " + transform.position);
+            // Debug.Log("Their pose: " + otherPlanet.transform.position);
+
+            Vector3 displacement = otherPlanet.transform.position - transform.position;
+            float scale = (float)(G/Math.Pow(displacement.sqrMagnitude, 1.5f));
+            acceleration = displacement*scale;
+        }
     }
 }
