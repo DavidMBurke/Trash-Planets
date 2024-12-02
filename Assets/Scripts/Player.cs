@@ -1,7 +1,11 @@
+using System.Security.Cryptography;
+using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public int playerId;
     public int minedTrash = 0;
     public int trashQty = 0;
     public int building_mat_qty = 0;
@@ -9,6 +13,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         minedTrashToQty();
+        updateInventory();
     }
 
     private void minedTrashToQty()
@@ -18,5 +23,11 @@ public class Player : MonoBehaviour
             minedTrash -= GameSettings.minedTrashRatio;
             trashQty += 1;
         }
+    }
+
+    private void updateInventory()
+    {
+        GameObject.Find($"P{playerId} Trash Amount").GetComponent<TextMeshProUGUI>().text = $"{trashQty}";
+        GameObject.Find($"P{playerId} Refined Amount").GetComponent<TextMeshProUGUI>().text = $"{building_mat_qty}";
     }
 }
