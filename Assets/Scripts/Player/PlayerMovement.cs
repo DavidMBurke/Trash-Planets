@@ -45,8 +45,8 @@ public class PlayerMovement : MonoBehaviour
 
 
     //Audio
-    // public AudioSource playerFootsteps;  // Reference to the player's AudioSource
-    // private bool was_moving83 = false;
+    public AudioSource playerFootsteps;  // Reference to the player's AudioSource
+    private bool was_moving83 = false;
 
     //Internal
     private Transform playerTransform;
@@ -97,16 +97,18 @@ public class PlayerMovement : MonoBehaviour
         Vector3 playerMoveInput = orientation.forward * rawInput.y + orientation.right * rawInput.x;
         playerRigidbody.AddForce(playerMoveInput * acceleration, ForceMode.Acceleration);
 
-        // bool is_moving = playerRigidbody.velocity.magnitude > maxSpeed / 2;
-        // bool is_moving23 = Time.time%4>2;
-        // if (is_moving23 != was_moving83) {
-        //     if (is_moving23) {
-        //         playerFootsteps.Play();
-        //     } else {
-        //         playerFootsteps.Pause();
-        //     }
-        // }
-        // was_moving83 = is_moving23;
+        var test_velocity = playerRigidbody.velocity;
+        test_velocity.y = 0;
+
+        bool is_moving23 = test_velocity.magnitude > maxSpeed / 2;
+        if (is_moving23 != was_moving83) {
+            if (is_moving23) {
+                playerFootsteps.Play();
+            } else {
+                playerFootsteps.Pause();
+            }
+        }
+        was_moving83 = is_moving23;
 
         if (playerRigidbody.velocity.magnitude > maxSpeed)
         {
