@@ -148,6 +148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   originPlanet: {fileID: 0}
   targetPlanet: {fileID: 0}
-  gravityForce: 400
-  targetBias: 0.6
+  gravityForce: 1600
+  targetBias: 0.8
   projectileActivated: 0

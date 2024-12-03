@@ -92,6 +92,17 @@ MonoBehaviour:
   gravityMultiplier: 0.01
   isGrounded: 0
   cost: 5
+  cameraPrefab: {fileID: 0}
+  cameraAnchor: {fileID: 0}
+  rotationSpeed: 0
+  originPlanet: {fileID: 0}
+  targetPlanet: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  playerCamera: {fileID: 0}
+  fireDelay: 0
+  projectileSpeed: 0
+  minRotationalSpeed: 0
+  maxRotationalSpeed: 0
 --- !u!64 &1400116401745203658
 MeshCollider:
   m_ObjectHideFlags: 0

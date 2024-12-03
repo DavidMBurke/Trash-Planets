@@ -40,6 +40,10 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float downForce;
 
+    [Header("Interaction Settings")]
+    public bool movementEnabled = true;
+
+
     //Audio
     // public AudioSource playerFootsteps;  // Reference to the player's AudioSource
     // private bool was_moving83 = false;
@@ -71,11 +75,18 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        updateOrientation();
         orientGravity();
-        movePlayer();
-        jumpPlayer();
+        updateOrientation();
+
+        if (movementEnabled)
+        {
+            movePlayer();
+            jumpPlayer();
+        }
+
         applyGravity();
+        playerDrag();
+
     }
 
 
@@ -100,14 +111,6 @@ public class PlayerMovement : MonoBehaviour
         if (playerRigidbody.velocity.magnitude > maxSpeed)
         {
             playerRigidbody.velocity = playerRigidbody.velocity.normalized * maxSpeed;
-        }
-
-
-        if (rawInput.magnitude < slowDownThreshold)
-        {
-            float playerForwardVelocity = Vector3.Dot(playerRigidbody.velocity, orientation.forward);
-            float playerRightVelocity = Vector3.Dot(playerRigidbody.velocity, orientation.right);
-            playerRigidbody.velocity = playerRigidbody.velocity - slowDownFraction * (orientation.forward * playerForwardVelocity + orientation.right * playerRightVelocity);
         }
 
         // // Play footsteps sound if the player is moving
@@ -135,6 +138,18 @@ public class PlayerMovement : MonoBehaviour
         if (!grounded && !this.Jump.IsPressed())
         {
             playerRigidbody.AddForce(-orientation.up * downForce, ForceMode.Force);
+        }
+    }
+
+    void playerDrag()
+    {
+        Vector2 rawInput = this.Move.ReadValue<Vector2>();
+
+        if (rawInput.magnitude < slowDownThreshold)
+        {
+            float playerForwardVelocity = Vector3.Dot(playerRigidbody.velocity, orientation.forward);
+            float playerRightVelocity = Vector3.Dot(playerRigidbody.velocity, orientation.right);
+            playerRigidbody.velocity = playerRigidbody.velocity - slowDownFraction * (orientation.forward * playerForwardVelocity + orientation.right * playerRightVelocity);
         }
     }
 

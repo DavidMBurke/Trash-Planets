@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
-public class WeaponScript : MonoBehaviour
+public class WeaponScript : Building
 {
     [SerializeField]
     private GameObject cameraPrefab;
@@ -61,11 +61,11 @@ public class WeaponScript : MonoBehaviour
         }
     }
 
-    public void startInteract(GameObject player)
+    public virtual void startInteract(GameObject player)
     {
         currentPlayer = player;
-        currentPlayer.GetComponent<PlayerMovement>().enabled = false;
-        currentPlayer.GetComponent<PlayerInteraction>().enabled = false;
+        currentPlayer.GetComponent<PlayerMovement>().movementEnabled = false;
+        currentPlayer.GetComponent<PlayerInteraction>().movementEnabled = false;
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(false);
         this.playerControls = player.GetComponent<PlayerInput>();
         createCamera();
@@ -73,10 +73,10 @@ public class WeaponScript : MonoBehaviour
         playerActive = true;
     }
 
-    void endInteract()
+    public virtual void endInteract()
     {
-        currentPlayer.GetComponent<PlayerMovement>().enabled = true;
-        currentPlayer.GetComponent<PlayerInteraction>().enabled = true;
+        currentPlayer.GetComponent<PlayerMovement>().movementEnabled = true;
+        currentPlayer.GetComponent<PlayerInteraction>().movementEnabled = true;
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(true);
         this.playerControls = null;
         destroyCamera();

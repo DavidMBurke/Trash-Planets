@@ -9,19 +9,30 @@ public class Catapult : WeaponScript
     [SerializeField]
     GameObject projectilePrefab;
     [SerializeField]
+    private GameObject playerCamera;
+    [SerializeField]
+    private float fireDelay;
+    [SerializeField]
     float projectileSpeed;
     [SerializeField]
     float minRotationalSpeed;
     [SerializeField]
     float maxRotationalSpeed;
-    [SerializeField]
-    private GameObject playerCamera;
+
+
+    private float lastFire = 0;
 
 
     // Start is called before the first frame update
     void Start()
     {
 
+    }
+
+    public override void startInteract(GameObject player)
+    {
+        base.startInteract(player);
+        lastFire = Time.time;
     }
 
     // Update is called once per frame
@@ -35,18 +46,30 @@ public class Catapult : WeaponScript
         if (this.playerActive)
         {
             weaponRotation();
-            checkFire();
             checkExit();
+
+            if (Time.time > lastFire + fireDelay)
+            {
+                bool shot = checkFire();
+                if (shot)
+                {
+                    lastFire = Time.time;
+                }
+            }
+
         }
     }
 
-    void checkFire()
+    private bool checkFire()
     {
         //Implement Ammo Check Here
         if (this.Fire.IsPressed())
         {
             shoot();
+            return true;
         }
+
+        return false;
     }
 
     void shoot()

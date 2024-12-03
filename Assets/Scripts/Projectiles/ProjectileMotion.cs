@@ -54,7 +54,7 @@ public class ProjectileMotion : MonoBehaviour
 
         if (distanceToPlanet > 0f)
         {
-            float gravitationalForce = gravityForce * bias / Mathf.Pow(distanceToPlanet, 2);
+            float gravitationalForce = gravityForce * bias / Mathf.Pow(distanceToPlanet, 1);
             this.objectRigidBody.AddForce(directionToPlanet * gravitationalForce);
         }
     }

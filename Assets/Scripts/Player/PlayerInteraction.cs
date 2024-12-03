@@ -12,6 +12,9 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField]
     private LayerMask interactables;
 
+    [Header("Interaction Settings")]
+    public bool movementEnabled = true;
+
     //Internal
     private PlayerInput playerControls;
 
@@ -37,7 +40,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        checkInteract();
+        if (movementEnabled)
+        {
+            checkInteract();
+        }
+
     }
 
     void checkInteract()
