@@ -5,7 +5,7 @@ using UnityEngine;
 public class TerrainFace
 {
     ShapeGenerator shapeGenerator;
-    Mesh mesh;
+    public Mesh mesh;
     int resolution;
     Vector3 localUp;
     Vector3 axisA;

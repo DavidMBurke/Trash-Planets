@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Planet : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Planet : MonoBehaviour
     public int resolution = 10;
     public bool autoUpdate = true;
     public float gravity = 9.8f;
+
+    public int totalTrash;
 
     public ShapeSettings shapeSettings;
     public ColorSettings colorSettings;
@@ -34,6 +37,7 @@ public class Planet : MonoBehaviour
 
     void Initialize()
     {
+        totalTrash = 0;
         shapeGenerator.UpdateSettings(shapeSettings);
         colorGenerator.UpdateSettings(colorSettings);
 
@@ -93,6 +97,7 @@ public class Planet : MonoBehaviour
         foreach (TerrainFace face in terrainFaces)
         {
             face.ConstructMesh();
+            totalTrash += face.mesh.triangles.Length;
         }
         colorGenerator.UpdateElevation(shapeGenerator.elevationMinMax);
     }

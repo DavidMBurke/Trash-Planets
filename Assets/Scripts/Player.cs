@@ -6,6 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int playerId;
+    public int playerScore = 0;
     public int minedTrash = 0;
     public int trashQty = 0;
     public int building_mat_qty = 0;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
         {
             minedTrash -= GameSettings.minedTrashRatio;
             trashQty += 1;
+            playerScore += 1;
         }
     }
 
