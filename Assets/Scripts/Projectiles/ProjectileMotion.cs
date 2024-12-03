@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class ProjectileMotion : MonoBehaviour
 {
-    [SerializeField]
-    private Transform originPlanet;
-    [SerializeField]
-    private Transform targetPlanet;
+
     [SerializeField]
     private float gravityForce;
     [Tooltip("0.5 is unbiased. Values closer to 1 correct to target planet")]
@@ -17,6 +14,8 @@ public class ProjectileMotion : MonoBehaviour
     public bool projectileActivated = true;
 
     private Rigidbody objectRigidBody;
+    private Transform originPlanet;
+    private Transform targetPlanet;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +28,18 @@ public class ProjectileMotion : MonoBehaviour
         {
             throw new System.Exception("No rigidbody found on object using projectile motion!");
         }
+
+        originPlanet = GameObject.Find("Planet1").transform;
+        targetPlanet = GameObject.Find("Planet2").transform;
+
+        //Check which planet is actually the origin
+        if (Vector3.Distance(this.gameObject.transform.position, targetPlanet.position) < Vector3.Distance(this.gameObject.transform.position, originPlanet.position))
+        {
+            Transform tempPlanet = originPlanet;
+            originPlanet = targetPlanet;
+            targetPlanet = tempPlanet;
+        }
+
     }
 
     // Update is called once per frame
@@ -59,10 +70,12 @@ public class ProjectileMotion : MonoBehaviour
         }
     }
 
+    /*
     public void activateProjectile(Transform originPlanet, Transform targetPlanet)
     {
         this.originPlanet = originPlanet;
         this.targetPlanet = targetPlanet;
         this.projectileActivated = true;
     }
+    */
 }
