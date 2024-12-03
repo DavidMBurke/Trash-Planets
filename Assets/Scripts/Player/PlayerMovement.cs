@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Player Components")]
     [SerializeField]
-    private Transform cameraTransform;
+    public Transform cameraTransform;
     [SerializeField]
     private Transform orientation;
     [SerializeField]
