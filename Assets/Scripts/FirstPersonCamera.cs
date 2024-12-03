@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.XR;
-
+using UnityEngine.InputSystem;
 public class FirstPersonCamera : MonoBehaviour
 {
     public Player player;
@@ -39,12 +36,30 @@ public class FirstPersonCamera : MonoBehaviour
     // For Button Interaction;
     private bool isLookingAtButton;
     private BuildingButton lastButton;
+    private PlayerInput playerControls;
+
+    //Player Input
+    protected InputAction Interact => FindAction("Fire");
+    protected InputAction Craft => FindAction("Craft");
+    protected InputAction ScrollUp => FindAction("ScrollUp");
+    protected InputAction ScrollDown => FindAction("ScrollDown");
+
+    protected InputAction FindAction(string actionName)
+    {
+        return playerControls.currentActionMap?.FindAction(actionName);
+    }
+
+    //Mining
+    private float mineTimer = 0;
+    private float mineTime = 1;
 
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         placementLayerMask = LayerMask.GetMask("PlanetSurface");
+        playerControls = player.gameObject.GetComponent<PlayerInput>();
+
     }
 
     private void Update()
@@ -70,7 +85,7 @@ public class FirstPersonCamera : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.R))
+        if (Craft.IsPressed())
         {
             isRefining = true;
             refining_time_current += Time.deltaTime;
@@ -156,29 +171,39 @@ public class FirstPersonCamera : MonoBehaviour
             colors[index] = highlightColor;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Interact.IsPressed())
         {
-            Vector3[] vertices = mesh.vertices;
-            Vector3 planetCenter = planet.gameObject.transform.position;
-            Transform meshTransform = meshFilter.transform;
+            mineTimer += Time.deltaTime;
 
-            Vector3 worldVert1 = meshTransform.TransformPoint(vertices[vert1]);
-            Vector3 worldVert2 = meshTransform.TransformPoint(vertices[vert2]);
-            Vector3 worldVert3 = meshTransform.TransformPoint(vertices[vert3]);
+            if (mineTimer > mineTime)
+            {
+                Vector3[] vertices = mesh.vertices;
+                Vector3 planetCenter = planet.gameObject.transform.position;
+                Transform meshTransform = meshFilter.transform;
 
-            float vertHeight1 = (worldVert1 - planetCenter).magnitude;
-            float vertHeight2 = (worldVert2 - planetCenter).magnitude;
-            float vertHeight3 = (worldVert3 - planetCenter).magnitude;
+                Vector3 worldVert1 = meshTransform.TransformPoint(vertices[vert1]);
+                Vector3 worldVert2 = meshTransform.TransformPoint(vertices[vert2]);
+                Vector3 worldVert3 = meshTransform.TransformPoint(vertices[vert3]);
 
-            List<(int index, Vector3 worldPos, float height)> verts = new List<(int, Vector3, float)> {
+                float vertHeight1 = (worldVert1 - planetCenter).magnitude;
+                float vertHeight2 = (worldVert2 - planetCenter).magnitude;
+                float vertHeight3 = (worldVert3 - planetCenter).magnitude;
+
+                List<(int index, Vector3 worldPos, float height)> verts = new List<(int, Vector3, float)> {
                             (vert1, worldVert1, vertHeight1),
                             (vert2, worldVert2, vertHeight2),
                             (vert3, worldVert3, vertHeight3)
                         };
 
-            (int index, Vector3 worldPos, float height) highestVert = verts.OrderByDescending(x => x.height).First();
-            
-            VertexManipulator.MineNTimes(player, meshFilter, planet, triangleIndex, GameSettings.minedTrashRatio, 2 * GameSettings.minedTrashRatio);
+                (int index, Vector3 worldPos, float height) highestVert = verts.OrderByDescending(x => x.height).First();
+
+                VertexManipulator.MineNTimes(player, meshFilter, planet, triangleIndex, GameSettings.minedTrashRatio, 2 * GameSettings.minedTrashRatio);
+
+                mineTimer -= mineTime;
+            }
+        } else
+        {
+            mineTimer = 0;
         }
 
         // For testing projectile trash mountain generation.
@@ -249,7 +274,7 @@ public class FirstPersonCamera : MonoBehaviour
             }
 
 
-            if (Input.GetMouseButtonDown(0) && canPlace)
+            if (Interact.IsPressed() && canPlace)
             {
                 PlaceBuilding();
             }
@@ -265,11 +290,11 @@ public class FirstPersonCamera : MonoBehaviour
         if (buildingPrefabs.Length == 0) return;
 
         float scrollInput = Input.mouseScrollDelta.y;
-        if (scrollInput > 0 || Input.GetKeyDown(KeyCode.RightBracket))
+        if (scrollInput > 0 || ScrollUp.WasPressedThisFrame())
         {
             selectedBuildingIndex = (selectedBuildingIndex + 1) % buildingPrefabs.Length;
         }
-        if (scrollInput < 0 || Input.GetKeyDown(KeyCode.LeftBracket))
+        if (scrollInput < 0 || ScrollDown.WasPressedThisFrame())
         {
             selectedBuildingIndex = (selectedBuildingIndex - 1 + buildingPrefabs.Length) % buildingPrefabs.Length;
         }
@@ -337,7 +362,7 @@ public class FirstPersonCamera : MonoBehaviour
         lastButton = button;
         button.Highlight();
 
-        if (!Input.GetMouseButton(0) )
+        if (!Interact.IsPressed())
         {
             if (button.isPressed)
             {

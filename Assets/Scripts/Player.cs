@@ -1,6 +1,4 @@
-using System.Security.Cryptography;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class Player : MonoBehaviour
