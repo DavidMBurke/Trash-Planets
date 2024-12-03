@@ -7,15 +7,13 @@ using Cinemachine;
 public class WeaponScript : Building
 {
     [SerializeField]
-    private GameObject cameraPrefab;
-    [SerializeField]
     protected Transform cameraAnchor;
     [SerializeField]
     private float rotationSpeed;
-    [SerializeField]
-    protected Transform originPlanet;
-    [SerializeField]
-    protected Transform targetPlanet;
+    //[SerializeField]
+    //protected Transform originPlanet;
+    //[SerializeField]
+    //protected Transform targetPlanet;
 
 
     //Internal
@@ -23,6 +21,7 @@ public class WeaponScript : Building
     protected GameObject currentCamera;
     private PlayerInput playerControls;
     private GameObject currentPlayer;
+    private GameObject cameraPrefab;
 
     protected InputAction Move => FindAction("Move");
 
@@ -66,6 +65,7 @@ public class WeaponScript : Building
         currentPlayer = player;
         currentPlayer.GetComponent<PlayerMovement>().movementEnabled = false;
         currentPlayer.GetComponent<PlayerInteraction>().movementEnabled = false;
+        this.cameraPrefab = currentPlayer.GetComponent<PlayerInteraction>().weaponCameraPrefab;
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(false);
         this.playerControls = player.GetComponent<PlayerInput>();
         createCamera();
@@ -77,6 +77,7 @@ public class WeaponScript : Building
     {
         currentPlayer.GetComponent<PlayerMovement>().movementEnabled = true;
         currentPlayer.GetComponent<PlayerInteraction>().movementEnabled = true;
+        this.cameraPrefab = null;
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(true);
         this.playerControls = null;
         destroyCamera();

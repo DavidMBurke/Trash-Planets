@@ -146,8 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53378a57e0c25a429a0aaaf83f73c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originPlanet: {fileID: 0}
-  targetPlanet: {fileID: 0}
   gravityForce: 1600
   targetBias: 0.8
-  projectileActivated: 0
+  projectileActivated: 1

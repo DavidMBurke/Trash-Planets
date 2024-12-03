@@ -5,10 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    public Camera playerCamera;
+    public GameObject weaponCameraPrefab;
     [SerializeField]
     private float interactDistance;
-    [SerializeField]
-    private Camera playerCamera;
     [SerializeField]
     private LayerMask interactables;
 

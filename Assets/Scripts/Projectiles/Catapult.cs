@@ -9,8 +9,6 @@ public class Catapult : WeaponScript
     [SerializeField]
     GameObject projectilePrefab;
     [SerializeField]
-    private GameObject playerCamera;
-    [SerializeField]
     private float fireDelay;
     [SerializeField]
     float projectileSpeed;
@@ -21,6 +19,7 @@ public class Catapult : WeaponScript
 
 
     private float lastFire = 0;
+    private Transform playerCameraTransform;
 
 
     // Start is called before the first frame update
@@ -33,6 +32,7 @@ public class Catapult : WeaponScript
     {
         base.startInteract(player);
         lastFire = Time.time;
+        playerCameraTransform = player.GetComponent<PlayerInteraction>().playerCamera.transform;
     }
 
     // Update is called once per frame
@@ -74,11 +74,11 @@ public class Catapult : WeaponScript
 
     void shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, playerCamera.transform.position, Quaternion.identity);//Instantiate(this.projectilePrefab, this.cameraAnchor);
-        projectile.GetComponent<ProjectileMotion>().activateProjectile(this.originPlanet, this.targetPlanet);
+        GameObject projectile = Instantiate(projectilePrefab, playerCameraTransform.position, Quaternion.identity);//Instantiate(this.projectilePrefab, this.cameraAnchor);
+        //projectile.GetComponent<ProjectileMotion>().activateProjectile(this.originPlanet, this.targetPlanet);
 
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
-        projectileRigidbody.velocity = playerCamera.transform.forward * projectileSpeed;
+        projectileRigidbody.velocity = playerCameraTransform.forward * projectileSpeed;
         float randomRotationalSpeedX = Random.Range(minRotationalSpeed, maxRotationalSpeed);
         float randomRotationalSpeedY = Random.Range(minRotationalSpeed, maxRotationalSpeed);
         float randomRotationalSpeedZ = Random.Range(minRotationalSpeed, maxRotationalSpeed);
