@@ -46,7 +46,13 @@ public class PlayerMovement : MonoBehaviour
 
     //Audio
     public AudioSource playerFootsteps;  // Reference to the player's AudioSource
+
+    // public AudioSource playerMining;
+
+    // public AudioSource playerJumping;
     private bool was_moving83 = false;
+
+    // private bool was_jumping = false;
 
     //Internal
     private Transform playerTransform;
@@ -115,17 +121,6 @@ public class PlayerMovement : MonoBehaviour
             playerRigidbody.velocity = playerRigidbody.velocity.normalized * maxSpeed;
         }
 
-        // // Play footsteps sound if the player is moving
-        // if (rawInput.magnitude > 0f && !playerFootsteps.isPlaying)
-        // {
-        //     playerFootsteps.Play();
-        // }
-        // // Stop the footsteps sound when the player stops moving
-        // else if (rawInput.magnitude == 0f && playerFootsteps.isPlaying)
-        // {
-        //     playerFootsteps.Stop();
-        // }
-
     }
 
     void jumpPlayer()
@@ -135,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
         if (grounded && this.Jump.IsPressed())
         {
             playerRigidbody.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
+            // playerJumping.Play();
         }
 
         if (!grounded && !this.Jump.IsPressed())
