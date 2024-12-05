@@ -85,13 +85,19 @@ public class Building : MonoBehaviour
     private void SnapToSurface()
     {
         // Perform a raycast within a reasonable range
-        if (Physics.Raycast(transform.position, -gravityDirection, out RaycastHit hit, groundCheckDistance + 0.5f))
+        if (Physics.Raycast(transform.position, -gravityDirection, out RaycastHit hit, groundCheckDistance))
         {
             if (hit.collider.CompareTag("Planet"))
             {
-                // Place the building flush with the surface
-                transform.position = hit.point + hit.normal * 0.01f; // Offset slightly to avoid collision issues
+                Collider buildingCollider = GetComponent<Collider>();
+                float offsetDistance = 0.01f;
 
+                if (buildingCollider != null)
+                {
+                    offsetDistance += Vector3.Distance(buildingCollider.bounds.center, buildingCollider.bounds.max);
+                }
+                // Place the building flush with the surface
+                transform.position = hit.point + hit.normal * offsetDistance;
                 // Reset velocity when grounded
                 velocity = Vector3.zero;
             }

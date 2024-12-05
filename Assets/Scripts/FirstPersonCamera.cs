@@ -22,7 +22,6 @@ public class FirstPersonCamera : MonoBehaviour
     public GameObject selectedPrefab;
     public Material previewMaterial;
     public float maxPlacementDistance = 50f;
-    public float buildingPlacementVertOffset = 0.1f;
     private LayerMask placementLayerMask;
     private GameObject previewBuilding;
     private bool canPlace;
@@ -206,12 +205,12 @@ public class FirstPersonCamera : MonoBehaviour
             mineTimer = 0;
         }
 
-        // For testing projectile trash mountain generation.
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    Vector3 planetCenter = planet.gameObject.transform.position;
-        //    VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
-        //}
+            // For testing projectile trash mountain generation.
+        if (Input.GetMouseButtonDown(1))
+        {
+            Vector3 planetCenter = planet.gameObject.transform.position;
+            VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
+        }
 
         mesh.colors = colors;
     }
@@ -256,7 +255,7 @@ public class FirstPersonCamera : MonoBehaviour
                 SetPreviewMaterial(previewBuilding);
             }
 
-
+            float buildingPlacementVertOffset = previewBuilding.GetComponent<Collider>().bounds.extents.y;
             previewBuilding.transform.position = hit.point + hit.normal * buildingPlacementVertOffset;
             previewBuilding.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
 
@@ -274,7 +273,7 @@ public class FirstPersonCamera : MonoBehaviour
             }
 
 
-            if (Interact.IsPressed() && canPlace)
+            if (Interact.WasPressedThisFrame() && canPlace)
             {
                 PlaceBuilding();
             }
