@@ -32,7 +32,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     // For refining logic
     private bool isRefining;
-    private float refining_time_total = 3;
+    private float refining_time_total = 1;
     private float refining_time_current = 0;
 
     // For Button Interaction;
@@ -125,7 +125,6 @@ public class FirstPersonCamera : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance))
         {
             MeshFilter meshFilter = hit.collider.GetComponent<MeshFilter>();
-            Debug.Log("hit");
             if (meshFilter != null)
             {
                 Mesh mesh = meshFilter.mesh;
@@ -236,6 +235,7 @@ public class FirstPersonCamera : MonoBehaviour
     /// Object Placement Logic
     /// </summary>
 
+
     private void HandlePlacementPreview()
     {
         if (selectedPrefab == null)
@@ -247,6 +247,13 @@ public class FirstPersonCamera : MonoBehaviour
             }
             return;
         }
+
+        if (lastHighlightedMeshFilter != null)
+        {
+            RestoreOriginalColors(lastHighlightedMeshFilter);
+            lastHighlightedMeshFilter = null;
+        }
+
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         if (Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance, placementLayerMask))
         {
@@ -325,6 +332,8 @@ public class FirstPersonCamera : MonoBehaviour
     {
         GameObject placedBuilding = Instantiate(selectedPrefab, previewBuilding.transform.position, previewBuilding.transform.rotation);
         placedBuilding.GetComponent<Renderer>().material = null;
+
+        placedBuilding.transform.SetParent(planet.transform);
 
         Building buildingComponent = placedBuilding.GetComponent<Building>();
         player.building_mat_qty -= buildingComponent.cost;
