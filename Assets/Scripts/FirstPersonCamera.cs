@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,17 +12,19 @@ public class FirstPersonCamera : MonoBehaviour
 
     private Camera playerCamera;
 
-    // For mesh highlighting logic
+    // For mining /  mesh highlighting logic
+    public float maxMiningDistance = 5f;
     private MeshFilter lastHighlightedMeshFilter;
     private int[] lastHighlightedTriangleIndices;
     private Color highlightColor = Color.red;
     private Dictionary<MeshFilter, Color[]> originalColorsCache = new Dictionary<MeshFilter, Color[]>();
+    private float mineTimer = 0;
+    private float mineTime = 1;
 
     // For building placement logic
     public GameObject[] buildingPrefabs;
     public GameObject selectedPrefab;
     public Material previewMaterial;
-    public float maxPlacementDistance = 50f;
     private LayerMask placementLayerMask;
     private GameObject previewBuilding;
     private bool canPlace;
@@ -48,10 +51,6 @@ public class FirstPersonCamera : MonoBehaviour
         return playerControls.currentActionMap?.FindAction(actionName);
     }
 
-    //Mining
-    private float mineTimer = 0;
-    private float mineTime = 1;
-
     private void Start()
     {
         playerCamera = GetComponent<Camera>();
@@ -59,6 +58,15 @@ public class FirstPersonCamera : MonoBehaviour
         placementLayerMask = LayerMask.GetMask("PlanetSurface");
         playerControls = player.gameObject.GetComponent<PlayerInput>();
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (playerCamera != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(playerCamera.transform.position, maxMiningDistance);
+        }
     }
 
     private void Update()
@@ -114,9 +122,10 @@ public class FirstPersonCamera : MonoBehaviour
             return;
         }
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance))
         {
             MeshFilter meshFilter = hit.collider.GetComponent<MeshFilter>();
+            Debug.Log("hit");
             if (meshFilter != null)
             {
                 Mesh mesh = meshFilter.mesh;
@@ -239,7 +248,7 @@ public class FirstPersonCamera : MonoBehaviour
             return;
         }
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        if (Physics.Raycast(ray, out RaycastHit hit, maxPlacementDistance, placementLayerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance, placementLayerMask))
         {
             if (previewBuilding == null || previewBuilding.name != selectedPrefab.name + "(Clone)")
             {
@@ -346,7 +355,7 @@ public class FirstPersonCamera : MonoBehaviour
     {
 
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
+        if (!Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance)) return;
 
         BuildingButton button = hit.collider.GetComponent<BuildingButton>();
         if (lastButton != null && lastButton != button) { 
