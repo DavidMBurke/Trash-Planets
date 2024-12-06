@@ -1,8 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Planet : MonoBehaviour
 {
@@ -35,11 +34,15 @@ public class Planet : MonoBehaviour
     public GameObject otherPlanet;
     public float G = 10;
     public bool orbitToggle;
+    public int trashOnPlanet;
+    private float trashUpdateTime = 5f;
+    private float trashUpdateTimer = 0;
 
     private void Start()
     {
         GeneratePlanet();
         updateAcceleration();
+        trashOnPlanet = CalculateTrashCount();
     }
 
     void Initialize()
@@ -120,6 +123,12 @@ public class Planet : MonoBehaviour
         velocity += acceleration;
         transform.position += velocity;
         transform.Rotate(rotationalVelocity);
+        trashUpdateTimer += Time.deltaTime;
+        if (trashUpdateTimer > trashUpdateTime)
+        {
+            trashUpdateTimer = 0;
+            trashOnPlanet = CalculateTrashCount();
+        }
     }
 
     public List<MeshFilter> GetMeshFiltersInRadius(Vector3 position, float radius)
@@ -171,4 +180,37 @@ public class Planet : MonoBehaviour
             // Debug.DrawLine(transform.position, transform.position + acceleration*1000, Color.red);
         }
     }
+
+    public int CalculateTrashCount()
+    {
+        float planetRadius = shapeSettings.planetRadius;
+        float elevationSum = 0f;
+
+        foreach (MeshFilter meshFilter in meshFilters)
+        {
+            if (meshFilter == null || meshFilter.sharedMesh == null) continue;
+
+            Mesh mesh = meshFilter.sharedMesh;
+            Vector3[] vertices = mesh.vertices;
+            Transform meshTransform = meshFilter.transform;
+
+            foreach (Vector3 vertex in vertices)
+            {
+                // Transform vertex to world space
+                Vector3 worldVertex = meshTransform.TransformPoint(vertex);
+
+                // Calculate the distance from the planet center
+                float distanceFromCenter = (worldVertex - transform.position).magnitude;
+
+                // Add the excess elevation above the planet's radius
+                if (distanceFromCenter > planetRadius)
+                {
+                    elevationSum += (distanceFromCenter - planetRadius);
+                }
+            }
+        }
+
+        return (int)(elevationSum / GameSettings.minedTrashRatio);
+    }
+
 }
