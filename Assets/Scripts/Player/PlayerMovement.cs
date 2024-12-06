@@ -48,8 +48,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource playerFootsteps;  // Reference to the player's AudioSource
 
     // public AudioSource playerMining;
-
-    // public AudioSource playerJumping;
+    public AudioSource playerJumping;
     private bool was_moving83 = false;
 
     // private bool was_jumping = false;
@@ -130,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
         if (grounded && this.Jump.IsPressed())
         {
             playerRigidbody.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
-            // playerJumping.Play();
+            playerJumping.Play();
         }
 
         if (!grounded && !this.Jump.IsPressed())

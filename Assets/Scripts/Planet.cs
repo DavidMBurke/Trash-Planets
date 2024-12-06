@@ -118,7 +118,7 @@ public class Planet : MonoBehaviour
     {
         updateAcceleration();
         velocity += acceleration;
-        transform.Translate(velocity);
+        transform.position += velocity;
         transform.Rotate(rotationalVelocity);
     }
 
@@ -165,8 +165,10 @@ public class Planet : MonoBehaviour
             // Debug.Log("Their pose: " + otherPlanet.transform.position);
 
             Vector3 displacement = otherPlanet.transform.position - transform.position;
+            // Debug.DrawLine(transform.position, otherPlanet.transform.position, Color.green);
             float scale = (float)(G/Math.Pow(displacement.sqrMagnitude, 1.5f));
             acceleration = displacement*scale;
+            // Debug.DrawLine(transform.position, transform.position + acceleration*1000, Color.red);
         }
     }
 }
