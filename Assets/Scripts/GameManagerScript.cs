@@ -27,7 +27,6 @@ public class GameManagerScript : MonoBehaviour
         Cursor.visible = true;
         GameOverScreen.SetActive(true);
         GetWinner();
-        Debug.Log("called");
     }
 
     public void restart(){

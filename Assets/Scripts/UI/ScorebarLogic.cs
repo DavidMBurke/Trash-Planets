@@ -34,7 +34,6 @@ public class ScorebarLogic : MonoBehaviour
         P2ratio = (float) P2Score/(P1Score + P2Score);
 
         GameObject.Find("P2 Score").GetComponent<RectTransform>().localScale = new Vector3(P2ratio, 1, 1);
-        Debug.Log((P1Score,P2Score));
     }
 
     public (int,int) getScores(){
