@@ -45,11 +45,11 @@ public class GameManagerScript : MonoBehaviour
 public void GetWinner()
 {
     var scores = scorebar.getScores();
-    if (scores.Item1 > scores.Item2)
+    if (scores.Item1 < scores.Item2)
     {
         winnerText.text = "Player 1 Wins!";
     }
-    else if (scores.Item1 < scores.Item2)
+    else if (scores.Item1 > scores.Item2)
     {
         winnerText.text = "Player 2 Wins!";
     }
