@@ -23,17 +23,17 @@ public class ScorebarLogic : MonoBehaviour
         int smallerCount = Mathf.Min(P1Trash, P2Trash);
         if (smallerCount == P1Trash)
         {
-            P1Score = 500;
-            P2Score = 500 + P2Trash - P1Trash;
+            P1Score = 250;
+            P2Score = 250 + P2Trash - P1Trash;
         } else
         {
-            P2Score = 500;
-            P1Score = 500 + P1Trash - P2Trash;
+            P2Score = 250;
+            P1Score = 250 + P1Trash - P2Trash;
         }
         P1ratio = (float) P1Score/(P1Score + P2Score);
         P2ratio = (float) P2Score/(P1Score + P2Score);
 
-        GameObject.Find("P2 Score").GetComponent<RectTransform>().localScale = new Vector3(P2ratio, 1, 1);
+        GameObject.Find("P2 Score").GetComponent<RectTransform>().localScale = new Vector3(P1ratio, 1, 1);
     }
 
     public (int,int) getScores(){
