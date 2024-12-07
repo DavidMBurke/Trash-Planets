@@ -59,7 +59,6 @@ public class Drill : Building
     private void MineTrash()
     {
         List<MeshFilter> meshFilters = planet.GetMeshFiltersInRadius(transform.position, radius);
-        Debug.Log(meshFilters.Count);
 
         foreach (MeshFilter meshFilter in meshFilters)
         {

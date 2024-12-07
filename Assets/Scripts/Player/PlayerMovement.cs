@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
 
     void jumpPlayer()
     {
-        bool grounded = Physics.Raycast(transform.position, -orientation.up, playerHeight * 0.5f + 0.4f, whatIsGround);
+        bool grounded = Physics.Raycast(transform.position, -orientation.up, playerHeight * 0.5f + 1f, whatIsGround);
 
         if (grounded && this.Jump.IsPressed())
         {
