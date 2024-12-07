@@ -106,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         test_velocity.y = 0;
 
         bool is_moving23 = test_velocity.magnitude > maxSpeed / 2;
-        if (is_moving23 != was_moving83) {
+        if (is_moving23 != was_moving83 && playerFootsteps != null) {
             if (is_moving23) {
                 playerFootsteps.Play();
             } else {
@@ -129,7 +129,10 @@ public class PlayerMovement : MonoBehaviour
         if (grounded && this.Jump.IsPressed())
         {
             playerRigidbody.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
-            playerJumping.Play();
+            if (playerJumping != null)
+            {
+                playerJumping.Play();
+            }
         }
 
         if (!grounded && !this.Jump.IsPressed())

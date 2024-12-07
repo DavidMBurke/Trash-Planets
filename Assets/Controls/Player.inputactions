@@ -224,6 +224,17 @@
                 },
                 {
                     "name": "",
+                    "id": "da43aff4-d416-45c9-9a89-65786c0e524a",
+                    "path": "<XInputController>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c1f7a91b-d0fd-4a62-997e-7fb9b69bf235",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -324,7 +335,7 @@
                 {
                     "name": "",
                     "id": "b1242140-d9c1-469c-8c55-ad5364cfbe37",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -339,6 +350,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6f89d513-749b-4745-9b1f-c839cf062c12",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -433,6 +455,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1f9f5af7-ccc3-41e2-b329-a43ea1592883",
+                    "path": "<XInputController>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Craft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "73fbf9bc-02b9-4233-a8ef-c884b8aa50ed",
                     "path": "<Keyboard>/f",
                     "interactions": "",
@@ -455,6 +488,17 @@
                 },
                 {
                     "name": "",
+                    "id": "f2cf3720-ac31-4c63-b5ff-6cff738ed724",
+                    "path": "<XInputController>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "0b448c1b-d0c1-49a2-93b3-b20c6dedbca3",
                     "path": "<Keyboard>/g",
                     "interactions": "",
@@ -468,6 +512,17 @@
                     "name": "",
                     "id": "8d8229e1-d0c2-4aca-848a-14df29c5f1e1",
                     "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bac75282-48e5-410f-9fde-f0aed198bed0",
+                    "path": "<XInputController>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
