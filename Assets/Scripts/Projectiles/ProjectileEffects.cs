@@ -12,10 +12,14 @@ public class ProjectileEffects : MonoBehaviour
     private float expireTime;
     private bool dying = false;
 
+    private float startup;
+    private bool active = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        startup = Time.time + 2;
+        active = true;
     }
 
     // Update is called once per frame
@@ -33,16 +37,20 @@ public class ProjectileEffects : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Building"))
+        if (Time.time > startup && active)
         {
-            Building buildingScript = collision.gameObject.GetComponent<Building>();
-            buildingScript.applyDamage(this.gameObject.GetComponent<Rigidbody>().velocity.magnitude * damagePerSpeed);
+            if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Drill") || collision.gameObject.CompareTag("Refinery"))
+            {
+                Building buildingScript = collision.gameObject.GetComponent<Building>();
+                buildingScript.applyDamage(this.gameObject.GetComponent<Rigidbody>().velocity.magnitude * damagePerSpeed);
+            }
+
+            if (collision.gameObject.CompareTag("Planet") && !dying)
+            {
+                dying = true;
+                expireTime = Time.time + timeAfterCollision;
+            }
         }
 
-        if (collision.gameObject.CompareTag("Planet") && !dying)
-        {
-            dying = true;
-            expireTime = Time.time + timeAfterCollision;
-        }
     }
 }
