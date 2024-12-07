@@ -11,6 +11,7 @@ public class Drill : Building
     public float collectionTime = 5;
     public float elapsedTime = 0;
     public float radius = 10;
+    public AudioSource drillsound;
 
     private void Start()
     {
@@ -67,6 +68,7 @@ public class Drill : Building
             {
                 minedTrash += 1;
                 break;
+                drillsound.Play();
             }
         }
 

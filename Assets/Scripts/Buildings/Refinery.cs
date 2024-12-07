@@ -19,6 +19,8 @@ public class Refinery : Building
     public float processTime = 5;
     public float processTimer = 0;
 
+    public AudioSource refinerysound;
+
     public void Start()
     {
         AssignButtonFunctions();
@@ -67,15 +69,16 @@ public class Refinery : Building
 
     private void ProcessTrash()
     {
-        if (trashQty == 0) 
+        if (trashQty == 0)
             return;
-        if (buildingMatQty == maxBuildingMatQty) 
+        if (buildingMatQty == maxBuildingMatQty)
             return;
         processTimer += Time.deltaTime;
-        if (processTimer > processTime) { 
+        if (processTimer > processTime) {
             processTimer -= processTime;
             trashQty -= 1;
             buildingMatQty += 1;
+            refinerysound.Play();
         }
     }
 
