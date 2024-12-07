@@ -69,8 +69,11 @@ public class Refinery : Building
 
     private void ProcessTrash()
     {
-        if (trashQty == 0)
+        if (trashQty == 0){
+            if (refinerysound.isPlaying)
+                refinerysound.Pause();
             return;
+        }
         if (buildingMatQty == maxBuildingMatQty)
             return;
         processTimer += Time.deltaTime;
@@ -78,7 +81,8 @@ public class Refinery : Building
             processTimer -= processTime;
             trashQty -= 1;
             buildingMatQty += 1;
-            refinerysound.Play();
+            if (!refinerysound.isPlaying)
+                refinerysound.Play();
         }
     }
 

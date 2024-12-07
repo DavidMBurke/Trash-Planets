@@ -25,6 +25,9 @@ public class FirstPersonCamera : MonoBehaviour
     public GameObject[] buildingPrefabs;
     public GameObject selectedPrefab;
     public Material previewMaterial;
+
+    public AudioSource miningSound;
+    public AudioSource clickSound;
     private LayerMask placementLayerMask;
     private GameObject previewBuilding;
     private bool canPlace;
@@ -171,10 +174,10 @@ public class FirstPersonCamera : MonoBehaviour
             vert1 = triangles[triangleIndex * 3];
             vert2 = triangles[triangleIndex * 3 + 1];
             vert3 = triangles[triangleIndex * 3 + 2];
-        } 
-        catch 
-        { 
-            return; 
+        }
+        catch
+        {
+            return;
         }
 
         lastHighlightedTriangleIndices = new int[] { vert1, vert2, vert3 };
@@ -187,7 +190,8 @@ public class FirstPersonCamera : MonoBehaviour
         if (Interact.IsPressed())
         {
             mineTimer += Time.deltaTime;
-
+            if (!miningSound.isPlaying)
+                miningSound.Play();
             if (mineTimer > mineTime)
             {
                 Vector3[] vertices = mesh.vertices;
@@ -364,7 +368,7 @@ public class FirstPersonCamera : MonoBehaviour
     }
 
     /// Button interaction
-    /// 
+    ///
 
     private void HandleButtonInteraction()
     {
@@ -373,11 +377,14 @@ public class FirstPersonCamera : MonoBehaviour
         if (!Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance)) return;
 
         BuildingButton button = hit.collider.GetComponent<BuildingButton>();
-        if (lastButton != null && lastButton != button) { 
+        if (lastButton != null && lastButton != button) {
             lastButton.RemoveHighlight();
             if (lastButton.isPressed)
             {
+                if (!clickSound.isPlaying)
+                    clickSound.Play();
                 lastButton.Depress();
+
             }
         }
 
@@ -389,19 +396,19 @@ public class FirstPersonCamera : MonoBehaviour
         {
             if (button.isPressed)
             {
+                if (!clickSound.isPlaying)
+                    clickSound.Play();
                 button.Depress();
             }
             return;
         }
-
+        if (!clickSound.isPlaying)
+                clickSound.Play();
         button.Press();
         Building building = button.GetComponentInParent<Building>();
         if (building == null) return;
 
         building.HandlePlayerInteraction(player);
-        
+
     }
 }
-
-
-

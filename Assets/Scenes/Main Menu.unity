@@ -1263,7 +1263,7 @@ RectTransform:
   - {fileID: 1704768379}
   - {fileID: 728240699}
   - {fileID: 2016302965}
-  m_Father: {fileID: 2115024062}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1665,7 +1665,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 19ef60c75fd70bc45b4bc59da916d568, type: 3}
+  m_Texture: {fileID: 2800000, guid: fd2c97f3705dfb1439c6fae3ed2660c3, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -2066,8 +2066,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1377534874}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2115024063
@@ -2133,3 +2132,4 @@ SceneRoots:
   - {fileID: 2115024062}
   - {fileID: 1168289308}
   - {fileID: 1269552094}
+  - {fileID: 1377534874}

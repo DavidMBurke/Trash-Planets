@@ -67,8 +67,9 @@ public class Drill : Building
             if (success)
             {
                 minedTrash += 1;
+                if (!drillsound.isPlaying)
+                    drillsound.Play();
                 break;
-                drillsound.Play();
             }
         }
 

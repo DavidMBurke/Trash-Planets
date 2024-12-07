@@ -19,6 +19,7 @@ public class Catapult : WeaponScript
     [SerializeField]
     int trashInAmmo = 1;
 
+    public AudioSource fireSound;
 
     private float lastFire = 0;
     private Transform playerCameraTransform;
@@ -41,7 +42,7 @@ public class Catapult : WeaponScript
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void FixedUpdate()
@@ -69,6 +70,7 @@ public class Catapult : WeaponScript
         if (this.Fire.IsPressed() && trashInAmmo <= currentPlayer.GetComponent<Player>().trashQty)
         {
             shoot();
+            fireSound.Play();
             return true;
         }
 
