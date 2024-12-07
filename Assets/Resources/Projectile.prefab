@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6805938098750834877}
   - component: {fileID: 5982188569017935417}
   - component: {fileID: 4171392390398502502}
-  - component: {fileID: 7777206817470533096}
+  - component: {fileID: -5374944889405331395}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -150,7 +150,7 @@ MonoBehaviour:
   gravityForce: 1600
   targetBias: 0.8
   projectileActivated: 1
---- !u!114 &7777206817470533096
+--- !u!114 &-5374944889405331395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

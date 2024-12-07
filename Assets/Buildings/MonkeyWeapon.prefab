@@ -183,6 +183,7 @@ MonoBehaviour:
   planetLayer:
     serializedVersion: 2
     m_Bits: 0
+  currentTrash: 0
 --- !u!65 &4227358966530033620
 BoxCollider:
   m_ObjectHideFlags: 0

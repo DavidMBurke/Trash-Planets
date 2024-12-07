@@ -32,7 +32,7 @@ public class MonkeyWeapon : WeaponScript
     private Transform playerCameraTransform;
 
     //Storing Mechanics
-    private float currentTrash = 0;
+    public float currentTrash = 0;
     private GameObject autoTarget;
 
 
@@ -105,7 +105,7 @@ public class MonkeyWeapon : WeaponScript
 
     void launchProjectile()
     {
-        currentPlayer.GetComponent<Player>().trashQty = currentPlayer.GetComponent<Player>().trashQty - trashInAmmo;
+        //currentPlayer.GetComponent<Player>().trashQty = currentPlayer.GetComponent<Player>().trashQty - trashInAmmo;
         GameObject projectile = Instantiate(projectilePrefab, playerCameraTransform.position, Quaternion.identity);//Instantiate(this.projectilePrefab, this.cameraAnchor);
         //projectile.GetComponent<ProjectileMotion>().activateProjectile(this.originPlanet, this.targetPlanet);
 
