@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 public class GameManagerScript : MonoBehaviour
 {
     // Start is called before the first frame update
 
     public GameObject GameOverScreen;
+
+    public ScorebarLogic scorebar;
+
+    [SerializeField] TextMeshProUGUI winnerText;
     void Start()
     {
 
@@ -21,6 +26,7 @@ public class GameManagerScript : MonoBehaviour
     public void gameOver(){
         Cursor.visible = true;
         GameOverScreen.SetActive(true);
+        GetWinner();
         Debug.Log("called");
     }
 
@@ -36,7 +42,21 @@ public class GameManagerScript : MonoBehaviour
         Debug.Log("TBI");
     }
 
-    public void getWinner(){
-        Debug.Log("TBI");
+
+public void GetWinner()
+{
+    var scores = scorebar.getScores();
+    if (scores.Item1 > scores.Item2)
+    {
+        winnerText.text = "Player 1 Wins!";
     }
+    else if (scores.Item1 < scores.Item2)
+    {
+        winnerText.text = "Player 2 Wins!";
+    }
+    else
+    {
+        winnerText.text = "Tied!";
+    }
+}
 }
