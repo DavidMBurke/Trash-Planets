@@ -11,6 +11,9 @@ public class Building : MonoBehaviour
     public int cost = 5;
     protected Player interactingPlayer;
 
+    [SerializeField]
+    private float health = 1;
+
     void Start()
     {
         if (planet == null)
@@ -107,5 +110,14 @@ public class Building : MonoBehaviour
     public void HandlePlayerInteraction(Player player)
     {
         interactingPlayer = player;
+    }
+
+    public void applyDamage(float damage)
+    {
+        this.health -= damage;
+        if (this.health <= 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

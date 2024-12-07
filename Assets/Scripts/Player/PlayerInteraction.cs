@@ -18,7 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     //Internal
     private PlayerInput playerControls;
 
-    protected InputAction Fire => FindAction("Fire");
+    protected InputAction Interact => FindAction("Interact");
 
     protected InputAction FindAction(string actionName)
     {
@@ -49,7 +49,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void checkInteract()
     {
-        if (this.Fire.IsPressed())
+        if (this.Interact.IsPressed())
         {
             RaycastHit hit;
 

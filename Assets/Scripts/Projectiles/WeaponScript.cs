@@ -6,6 +6,7 @@ using Cinemachine;
 
 public class WeaponScript : Building
 {
+    [Header("Weapon Settings")]
     [SerializeField]
     protected Transform cameraAnchor;
     [SerializeField]
@@ -20,14 +21,19 @@ public class WeaponScript : Building
     protected bool playerActive = false;
     protected GameObject currentCamera;
     private PlayerInput playerControls;
-    private GameObject currentPlayer;
+    protected GameObject currentPlayer;
     private GameObject cameraPrefab;
+    private GameObject playerOutputCamera;
+
+    private float interactCooldown;
 
     protected InputAction Move => FindAction("Move");
 
     protected InputAction Fire => FindAction("Fire");
 
     protected InputAction Exit => FindAction("Exit");
+
+    protected InputAction Target => FindAction("Target");
 
     protected InputAction FindAction(string actionName)
     {
@@ -54,7 +60,7 @@ public class WeaponScript : Building
 
     protected void checkExit()
     {
-        if (this.Exit.IsPressed())
+        if (this.Exit.IsPressed() && Time.time > interactCooldown)
         {
             endInteract();
         }
@@ -62,28 +68,48 @@ public class WeaponScript : Building
 
     public virtual void startInteract(GameObject player)
     {
+        if (Time.time <= interactCooldown)
+        {
+            return;
+        }
+
         currentPlayer = player;
+
+        //Disable other actions
         currentPlayer.GetComponent<PlayerMovement>().movementEnabled = false;
-        currentPlayer.GetComponent<PlayerInteraction>().movementEnabled = false;
-        this.cameraPrefab = currentPlayer.GetComponent<PlayerInteraction>().weaponCameraPrefab;
+
+        PlayerInteraction currentPlayerInteraction = currentPlayer.GetComponent<PlayerInteraction>();
+        currentPlayerInteraction.movementEnabled = false;
+        this.cameraPrefab = currentPlayerInteraction.weaponCameraPrefab;
+        this.playerOutputCamera = currentPlayerInteraction.playerCamera.gameObject;
+        this.playerOutputCamera.GetComponent<FirstPersonCamera>().controlEnabled = false;
+
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(false);
         this.playerControls = player.GetComponent<PlayerInput>();
         createCamera();
 
+        interactCooldown = Time.time + 2;
         playerActive = true;
     }
 
     public virtual void endInteract()
     {
         currentPlayer.GetComponent<PlayerMovement>().movementEnabled = true;
-        currentPlayer.GetComponent<PlayerInteraction>().movementEnabled = true;
+
+        PlayerInteraction currentPlayerInteraction = currentPlayer.GetComponent<PlayerInteraction>();
+        currentPlayerInteraction.movementEnabled = true;
         this.cameraPrefab = null;
+        this.playerOutputCamera.GetComponent<FirstPersonCamera>().controlEnabled = true;
+        this.playerOutputCamera = null;
+
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(true);
         this.playerControls = null;
         destroyCamera();
 
-
+        interactCooldown = Time.time + 2;
         playerActive = false;
+
+        currentPlayer = null;
     }
 
     void createCamera()

@@ -16,6 +16,8 @@ public class Catapult : WeaponScript
     float minRotationalSpeed;
     [SerializeField]
     float maxRotationalSpeed;
+    [SerializeField]
+    int trashInAmmo = 1;
 
 
     private float lastFire = 0;
@@ -30,6 +32,7 @@ public class Catapult : WeaponScript
 
     public override void startInteract(GameObject player)
     {
+        Debug.Log("Started Interact");
         base.startInteract(player);
         lastFire = Time.time;
         playerCameraTransform = player.GetComponent<PlayerInteraction>().playerCamera.transform;
@@ -63,7 +66,7 @@ public class Catapult : WeaponScript
     private bool checkFire()
     {
         //Implement Ammo Check Here
-        if (this.Fire.IsPressed())
+        if (this.Fire.IsPressed() && trashInAmmo <= currentPlayer.GetComponent<Player>().trashQty)
         {
             shoot();
             return true;
@@ -74,6 +77,7 @@ public class Catapult : WeaponScript
 
     void shoot()
     {
+        currentPlayer.GetComponent<Player>().trashQty = currentPlayer.GetComponent<Player>().trashQty - trashInAmmo;
         GameObject projectile = Instantiate(projectilePrefab, playerCameraTransform.position, Quaternion.identity);//Instantiate(this.projectilePrefab, this.cameraAnchor);
         //projectile.GetComponent<ProjectileMotion>().activateProjectile(this.originPlanet, this.targetPlanet);
 

@@ -137,6 +137,7 @@ MonoBehaviour:
   gravityMultiplier: 0.01
   isGrounded: 0
   cost: 5
+  health: 1
   cameraAnchor: {fileID: 1394914489648286340}
   rotationSpeed: 4
   projectilePrefab: {fileID: 2093507760264313308, guid: 7fede5818833c244f916d079b87f6c7a, type: 3}
@@ -144,6 +145,7 @@ MonoBehaviour:
   projectileSpeed: 30
   minRotationalSpeed: 0
   maxRotationalSpeed: 8
+  trashInAmmo: 10
 --- !u!64 &1400116401745203658
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -40,6 +40,9 @@ public class FirstPersonCamera : MonoBehaviour
     private BuildingButton lastButton;
     private PlayerInput playerControls;
 
+    //For Player Inteactions
+    public bool controlEnabled = true;
+
     //Player Input
     protected InputAction Interact => FindAction("Fire");
     protected InputAction Craft => FindAction("Craft");
@@ -71,13 +74,16 @@ public class FirstPersonCamera : MonoBehaviour
 
     private void Update()
     {
-        HandleRefining();
-        if (isRefining) return;
-        HandleButtonInteraction();
-        if (isLookingAtButton) return;
-        HandleMining();
-        HandleBuildingSelection();
-        HandlePlacementPreview();
+        if (controlEnabled)
+        {
+            HandleRefining();
+            if (isRefining) return;
+            HandleButtonInteraction();
+            if (isLookingAtButton) return;
+            HandleMining();
+            HandleBuildingSelection();
+            HandlePlacementPreview();
+        }
     }
 
     /// <summary>

@@ -121,7 +121,10 @@ public class Planet : MonoBehaviour
     {
         updateAcceleration();
         velocity += acceleration;
-        transform.position += velocity;
+        if (orbitToggle)
+        {
+            transform.position += velocity;
+        }
         transform.Rotate(rotationalVelocity);
         trashUpdateTimer += Time.deltaTime;
         if (trashUpdateTimer > trashUpdateTime)
