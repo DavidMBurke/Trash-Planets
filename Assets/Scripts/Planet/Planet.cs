@@ -37,7 +37,7 @@ public class Planet : MonoBehaviour
     public float G = 10;
     public bool orbitToggle;
     public int trashOnPlanet;
-    private float trashUpdateTime = 5f;
+    private float trashUpdateTime = 2f;
     private float trashUpdateTimer = 0;
 
 
@@ -122,19 +122,19 @@ public class Planet : MonoBehaviour
 
     void Update()
     {
+        trashUpdateTimer += Time.deltaTime;
+        if (trashUpdateTimer > trashUpdateTime)
+        {
+            trashUpdateTimer = 0;
+            trashOnPlanet = CalculateTrashCount();
+        }
         if (!GameManager.isPaused){
+            transform.Rotate(rotationalVelocity);
             updateAcceleration();
             velocity += acceleration;
             if (orbitToggle)
             {
                 transform.position += velocity;
-            }
-            transform.Rotate(rotationalVelocity);
-            trashUpdateTimer += Time.deltaTime;
-            if (trashUpdateTimer > trashUpdateTime)
-            {
-                trashUpdateTimer = 0;
-                trashOnPlanet = CalculateTrashCount();
             }
         }
     }
