@@ -40,7 +40,7 @@ public class Refinery : Building
         }
         if (interactingPlayer.trashQty < num)
         {
-            trashQty = interactingPlayer.trashQty;
+            trashQty += interactingPlayer.trashQty;
             interactingPlayer.trashQty = 0;
             return;
         }
