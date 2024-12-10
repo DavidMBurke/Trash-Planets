@@ -11,9 +11,11 @@ public class GameManagerScript : MonoBehaviour
     public GameObject GameOverScreen;
 
     public GameObject PauseScreen;
+
+    public GameObject RuleSet;
     public ScorebarLogic scorebar;
 
-    public GameObject GameOverSelect, PauseSelect;
+    public GameObject GameOverSelect, PauseSelect, RulesetFirstSelect,RuleSetCloseSelect;
 
     public bool isPaused = false;
 
@@ -27,7 +29,7 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && !gameend){
+        if(Input.GetKeyDown(KeyCode.Escape) && !gameend && !RuleSet.activeSelf){
             Debug.Log("Escape");
             if(isPaused)
                 resume();
@@ -89,4 +91,12 @@ public void GetWinner()
         winnerText.text = "Tied!";
     }
 }
+public void RulesetOpen(){
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(RulesetFirstSelect);
+    }
+public void RulesetClose(){
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(RuleSetCloseSelect);
+    }
 }
