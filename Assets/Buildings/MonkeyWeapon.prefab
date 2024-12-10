@@ -168,13 +168,13 @@ MonoBehaviour:
   isGrounded: 0
   trashCost: 0
   matsCost: 15
-  health: 15
+  health: 1
   cameraAnchor: {fileID: 7169806478672241758}
   rotationSpeed: 2
+  burstSize: 15
   trashInAmmo: 3
   projectilePrefab: {fileID: 2093507760264313308, guid: 05968c3da84cf044dac7f67c878bc96e, type: 3}
   fireDelay: 5
-  burstSize: 15
   burstDelay: 0.05
   projectileSpeed: 30
   minRotationalSpeed: 0
