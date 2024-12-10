@@ -8,7 +8,8 @@ public class Building : MonoBehaviour
     private Vector3 velocity;
     public float gravityMultiplier = 1.0f; // Adjust to control fall speed
     public bool isGrounded;
-    public int cost = 5;
+    public int trashCost = 0;
+    public int matsCost = 0;
     protected Player interactingPlayer;
 
     [SerializeField]

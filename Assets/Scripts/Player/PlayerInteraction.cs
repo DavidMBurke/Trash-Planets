@@ -67,7 +67,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                Debug.Log("No Object Hit");
+
             }
         }
 

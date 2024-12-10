@@ -15,7 +15,10 @@ public class WeaponScript : Building
     //protected Transform originPlanet;
     //[SerializeField]
     //protected Transform targetPlanet;
-
+    [SerializeField]
+    protected float burstSize;
+    [SerializeField]
+    protected int trashInAmmo;
 
     //Internal
     protected bool playerActive = false;
@@ -90,6 +93,8 @@ public class WeaponScript : Building
         this.playerControls = player.GetComponent<PlayerInput>();
         createCamera();
 
+        playerOutputCamera.GetComponent<FirstPersonCamera>().setCostsGUI((trashInAmmo * burstSize).ToString(), "-");
+
         interactCooldown = Time.time + 2;
         playerActive = true;
     }
@@ -107,6 +112,8 @@ public class WeaponScript : Building
         currentPlayer.transform.Find("Virtual Camera").gameObject.SetActive(true);
         this.playerControls = null;
         destroyCamera();
+
+        playerOutputCamera.GetComponent<FirstPersonCamera>().setCostsGUI("-", "-");
 
         interactCooldown = Time.time + 2;
         playerActive = false;

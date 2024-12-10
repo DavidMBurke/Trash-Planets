@@ -16,8 +16,6 @@ public class Catapult : WeaponScript
     float minRotationalSpeed;
     [SerializeField]
     float maxRotationalSpeed;
-    [SerializeField]
-    int trashInAmmo = 1;
 
     public AudioSource fireSound;
 

@@ -9,8 +9,6 @@ public class MonkeyWeapon : WeaponScript
     [SerializeField]
     private float fireDelay;
     [SerializeField]
-    private float burstSize;
-    [SerializeField]
     private float burstDelay;
     [SerializeField]
     private float projectileSpeed;
@@ -18,8 +16,6 @@ public class MonkeyWeapon : WeaponScript
     private float minRotationalSpeed;
     [SerializeField]
     private float maxRotationalSpeed;
-    [SerializeField]
-    private int trashInAmmo;
     [SerializeField]
     private GameObject targetPrefab;
     [SerializeField]

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7530717220060798898}
   - component: {fileID: 2184506717916277203}
   - component: {fileID: 5330227668686478032}
-  m_Layer: 0
+  m_Layer: 22
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 6863607800793651582}
   - component: {fileID: 6115256505980625749}
   - component: {fileID: 4157955015529272431}
-  m_Layer: 21
+  m_Layer: 22
   m_Name: Player2 Weapon Cam
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -124,8 +124,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3318300863412873195}
   - component: {fileID: 8448866240631919485}
-  - component: {fileID: 4227358966530033620}
   - component: {fileID: 1173066843279023945}
+  - component: {fileID: 3885223724545677169}
   m_Layer: 6
   m_Name: MonkeyWeapon
   m_TagString: Weapon
@@ -166,10 +166,12 @@ MonoBehaviour:
   groundCheckDistance: 1
   gravityMultiplier: 1
   isGrounded: 0
-  cost: 5
-  health: 1
+  trashCost: 0
+  matsCost: 15
+  health: 15
   cameraAnchor: {fileID: 7169806478672241758}
   rotationSpeed: 2
+  trashInAmmo: 3
   projectilePrefab: {fileID: 2093507760264313308, guid: 05968c3da84cf044dac7f67c878bc96e, type: 3}
   fireDelay: 5
   burstSize: 15
@@ -177,34 +179,12 @@ MonoBehaviour:
   projectileSpeed: 30
   minRotationalSpeed: 0
   maxRotationalSpeed: 15
-  trashInAmmo: 10
   targetPrefab: {fileID: 5655932857202261886, guid: 6b2797a95cc735349a7a078786847f05, type: 3}
   maxTargetDistance: 10000
   planetLayer:
     serializedVersion: 2
     m_Bits: 4294967295
   currentTrash: 0
---- !u!65 &4227358966530033620
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6120273040278883098}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 5, z: 2}
-  m_Center: {x: 0, y: 0, z: 2.8}
 --- !u!23 &1173066843279023945
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -247,3 +227,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3885223724545677169
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120273040278883098}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}

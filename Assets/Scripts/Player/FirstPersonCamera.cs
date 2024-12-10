@@ -5,6 +5,8 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
+
 public class FirstPersonCamera : MonoBehaviour
 {
     public Player player;
@@ -37,7 +39,7 @@ public class FirstPersonCamera : MonoBehaviour
 
     // For refining logic
     private bool isRefining;
-    private float refining_time_total = 1;
+    private float refining_time_total = 3;
     private float refining_time_current = 0;
 
     // For Button Interaction;
@@ -47,6 +49,12 @@ public class FirstPersonCamera : MonoBehaviour
 
     //For Player Inteactions
     public bool controlEnabled = true;
+
+    private GameObject playerCostUI;
+    [SerializeField]
+    private TextMeshProUGUI trashAmountText;
+    [SerializeField]
+    private TextMeshProUGUI matsAmountText;
 
     //Player Input
     protected InputAction Interact => FindAction("Fire");
@@ -134,6 +142,7 @@ public class FirstPersonCamera : MonoBehaviour
             return;
         }
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        //Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance))
         {
             MeshFilter meshFilter = hit.collider.GetComponent<MeshFilter>();
@@ -227,11 +236,11 @@ public class FirstPersonCamera : MonoBehaviour
         }
 
             // For testing projectile trash mountain generation.
-        if (Input.GetMouseButtonDown(1))
-        {
-            Vector3 planetCenter = planet.gameObject.transform.position;
-            VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
-        }
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    Vector3 planetCenter = planet.gameObject.transform.position;
+        //    VertexManipulator.ExpandVerticesFromTriangle(meshFilter, planetCenter, triangleIndex, 1000, 3, 5);
+        //}
 
         mesh.colors = colors;
     }
@@ -258,6 +267,7 @@ public class FirstPersonCamera : MonoBehaviour
                 Destroy(previewBuilding);
                 previewBuilding = null;
             }
+            setCostsGUI("-", "-");
             return;
         }
 
@@ -268,6 +278,7 @@ public class FirstPersonCamera : MonoBehaviour
         }
 
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        //Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance, placementLayerMask))
         {
             if (previewBuilding == null || previewBuilding.name != selectedPrefab.name + "(Clone)")
@@ -283,14 +294,16 @@ public class FirstPersonCamera : MonoBehaviour
 
                 SetPreviewMaterial(previewBuilding);
             }
-
             float buildingPlacementVertOffset = previewBuilding.GetComponent<Collider>().bounds.extents.y;
-            previewBuilding.transform.position = hit.point + hit.normal * buildingPlacementVertOffset;
-            previewBuilding.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+            Vector3 planetToHitNormal = (hit.point - planet.transform.position).normalized;
+            previewBuilding.transform.position = hit.point + (planetToHitNormal * buildingPlacementVertOffset);//hit.point + hit.normal * buildingPlacementVertOffset;
+            previewBuilding.transform.rotation = Quaternion.FromToRotation(Vector3.up, planetToHitNormal);
 
             bool hasNoCollisions = !Physics.CheckBox(previewBuilding.transform.position, previewBuilding.GetComponent<Collider>().bounds.extents, previewBuilding.transform.rotation);
-            bool canAfford = previewBuilding.GetComponent<Building>().cost <= player.building_mat_qty;
+            bool canAfford = (previewBuilding.GetComponent<Building>().trashCost <= player.trashQty && 
+                                previewBuilding.GetComponent<Building>().matsCost <= player.building_mat_qty);
             bool canPlace = hasNoCollisions && canAfford;
+            setCostsGUI(previewBuilding.GetComponent<Building>().trashCost.ToString(), previewBuilding.GetComponent<Building>().matsCost.ToString());
 
             if (canPlace)
             {
@@ -349,7 +362,8 @@ public class FirstPersonCamera : MonoBehaviour
         placedBuilding.transform.SetParent(planet.transform);
 
         Building buildingComponent = placedBuilding.GetComponent<Building>();
-        player.building_mat_qty -= buildingComponent.cost;
+        player.building_mat_qty -= buildingComponent.matsCost;
+        player.trashQty -= buildingComponent.trashCost;
         if (buildingComponent != null)
         {
             buildingComponent.planet = planet;
@@ -377,6 +391,7 @@ public class FirstPersonCamera : MonoBehaviour
     {
 
         Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        //Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         if (!Physics.Raycast(ray, out RaycastHit hit, maxMiningDistance)) return;
 
         BuildingButton button = hit.collider.GetComponent<BuildingButton>();
@@ -413,5 +428,11 @@ public class FirstPersonCamera : MonoBehaviour
 
         building.HandlePlayerInteraction(player);
 
+    }
+
+    public void setCostsGUI(string trash, string mats)
+    {
+        this.trashAmountText.text = "Cost: " + trash;
+        this.matsAmountText.text = "Cost: " + mats;
     }
 }

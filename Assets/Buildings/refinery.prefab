@@ -2407,7 +2407,8 @@ MonoBehaviour:
   groundCheckDistance: 0.5
   gravityMultiplier: 0.01
   isGrounded: 0
-  cost: 5
+  trashCost: 0
+  matsCost: 5
   health: 1
   button1: {fileID: 2522957721532285675}
   button10: {fileID: 8341666519431034469}
@@ -2419,7 +2420,7 @@ MonoBehaviour:
   maxBuildingMatQty: 100
   trashQty: 0
   buildingMatQty: 0
-  processTime: 5
+  processTime: 3
   processTimer: 0
   refinerysound: {fileID: 8837303297603354074}
 --- !u!64 &-3558800172246066641
