@@ -67,6 +67,7 @@ public class timer : MonoBehaviour
     private void OnCountdownEnd()
     {
         Debug.Log("Countdown has ended!");
+        gameManager.gameend = true;
         gameManager.gameOver();
         // Add any additional behavior here, such as triggering events or animations
     }

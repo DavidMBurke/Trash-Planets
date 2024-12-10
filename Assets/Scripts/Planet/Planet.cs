@@ -32,11 +32,14 @@ public class Planet : MonoBehaviour
     public Vector3 rotationalVelocity;
 
     public GameObject otherPlanet;
+
+    public GameManagerScript GameManager;
     public float G = 10;
     public bool orbitToggle;
     public int trashOnPlanet;
     private float trashUpdateTime = 5f;
     private float trashUpdateTimer = 0;
+
 
     private void Start()
     {
@@ -119,18 +122,20 @@ public class Planet : MonoBehaviour
 
     void Update()
     {
-        updateAcceleration();
-        velocity += acceleration;
-        if (orbitToggle)
-        {
-            transform.position += velocity;
-        }
-        transform.Rotate(rotationalVelocity);
-        trashUpdateTimer += Time.deltaTime;
-        if (trashUpdateTimer > trashUpdateTime)
-        {
-            trashUpdateTimer = 0;
-            trashOnPlanet = CalculateTrashCount();
+        if (!GameManager.isPaused){
+            updateAcceleration();
+            velocity += acceleration;
+            if (orbitToggle)
+            {
+                transform.position += velocity;
+            }
+            transform.Rotate(rotationalVelocity);
+            trashUpdateTimer += Time.deltaTime;
+            if (trashUpdateTimer > trashUpdateTime)
+            {
+                trashUpdateTimer = 0;
+                trashOnPlanet = CalculateTrashCount();
+            }
         }
     }
 
