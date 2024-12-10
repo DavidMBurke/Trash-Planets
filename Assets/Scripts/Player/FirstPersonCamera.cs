@@ -28,6 +28,8 @@ public class FirstPersonCamera : MonoBehaviour
 
     public AudioSource miningSound;
     public AudioSource clickSound;
+
+    public AudioSource refineSound;
     private LayerMask placementLayerMask;
     private GameObject previewBuilding;
     private bool canPlace;
@@ -107,6 +109,7 @@ public class FirstPersonCamera : MonoBehaviour
             refining_time_current += Time.deltaTime;
             if (refining_time_current >= refining_time_total)
             {
+                refineSound.Play();
                 player.trashQty -= 1;
                 player.building_mat_qty += 1;
                 refining_time_current = 0;
