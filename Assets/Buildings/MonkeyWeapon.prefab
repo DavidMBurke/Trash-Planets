@@ -170,7 +170,7 @@ MonoBehaviour:
   health: 1
   cameraAnchor: {fileID: 7169806478672241758}
   rotationSpeed: 2
-  projectilePrefab: {fileID: 2093507760264313308, guid: 7fede5818833c244f916d079b87f6c7a, type: 3}
+  projectilePrefab: {fileID: 2093507760264313308, guid: 05968c3da84cf044dac7f67c878bc96e, type: 3}
   fireDelay: 5
   burstSize: 15
   burstDelay: 0.05
@@ -179,10 +179,10 @@ MonoBehaviour:
   maxRotationalSpeed: 15
   trashInAmmo: 10
   targetPrefab: {fileID: 5655932857202261886, guid: 6b2797a95cc735349a7a078786847f05, type: 3}
-  maxTargetDistance: 100
+  maxTargetDistance: 10000
   planetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   currentTrash: 0
 --- !u!65 &4227358966530033620
 BoxCollider:

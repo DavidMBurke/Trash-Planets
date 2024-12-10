@@ -9,16 +9,16 @@ public class ProjectileMotion : MonoBehaviour
     private float gravityForce;
     [Tooltip("0.5 is unbiased. Values closer to 1 correct to target planet")]
     [SerializeField]
-    private float targetBias = 0.5f;
+    protected float targetBias = 0.5f;
     [SerializeField]
     public bool projectileActivated = true;
 
-    private Rigidbody objectRigidBody;
-    private Transform originPlanet;
-    private Transform targetPlanet;
+    protected Rigidbody objectRigidBody;
+    protected Transform originPlanet;
+    protected Transform targetPlanet;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         try
         {
@@ -48,7 +48,7 @@ public class ProjectileMotion : MonoBehaviour
         
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (projectileActivated)
         {
@@ -57,7 +57,7 @@ public class ProjectileMotion : MonoBehaviour
         }
     }
 
-    void applyGravity(float bias, Transform location)
+    protected void applyGravity(float bias, Transform location)
     {
         Vector3 directionToPlanet = (location.position - this.gameObject.transform.position).normalized;
 

@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     {
         if (!buttonclicksound.isPlaying)
             buttonclicksound.Play();
-        SceneManager.LoadSceneAsync("Production");
+        SceneManager.LoadSceneAsync("Controller Connect");
     }
 
     public void RulesetOpen(){

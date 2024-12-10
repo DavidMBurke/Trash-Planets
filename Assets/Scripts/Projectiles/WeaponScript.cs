@@ -35,6 +35,8 @@ public class WeaponScript : Building
 
     protected InputAction Target => FindAction("Target");
 
+    protected InputAction ScrollUp => FindAction("ScrollUp");
+
     protected InputAction FindAction(string actionName)
     {
         return this.playerControls.currentActionMap?.FindAction(actionName);

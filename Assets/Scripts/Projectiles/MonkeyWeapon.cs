@@ -34,6 +34,7 @@ public class MonkeyWeapon : WeaponScript
     //Storing Mechanics
     public float currentTrash = 0;
     private GameObject autoTarget;
+    private float addDelay;
 
 
     // Start is called before the first frame update
@@ -61,6 +62,7 @@ public class MonkeyWeapon : WeaponScript
         {
             weaponRotation();
             checkSetTarget();
+            checkTrashAdded();
             checkExit();
 
             if (Time.time > lastFire + fireDelay)
@@ -105,9 +107,22 @@ public class MonkeyWeapon : WeaponScript
 
     void launchProjectile()
     {
-        //currentPlayer.GetComponent<Player>().trashQty = currentPlayer.GetComponent<Player>().trashQty - trashInAmmo;
+        currentPlayer.GetComponent<Player>().trashQty = currentPlayer.GetComponent<Player>().trashQty - trashInAmmo;
         GameObject projectile = Instantiate(projectilePrefab, playerCameraTransform.position, Quaternion.identity);//Instantiate(this.projectilePrefab, this.cameraAnchor);
         //projectile.GetComponent<ProjectileMotion>().activateProjectile(this.originPlanet, this.targetPlanet);
+        ProjectileMotion motionScript = projectile.GetComponent<ProjectileMotion>();
+        if (motionScript is SuperProjectileMotion superMotionScript)
+        {
+            if (autoTarget == null)
+            {
+                superMotionScript.activateProjectile(null);
+            }
+            else
+            {
+                superMotionScript.activateProjectile(autoTarget.transform);
+            }
+
+        }
 
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
         projectileRigidbody.velocity = playerCameraTransform.forward * projectileSpeed;
@@ -126,11 +141,23 @@ public class MonkeyWeapon : WeaponScript
         }
     }
 
+    void checkTrashAdded()
+    {
+        if (this.ScrollUp.IsPressed() && Time.time >= addDelay)
+        {
+            if (currentPlayer.GetComponent<Player>().trashQty >= (trashInAmmo * burstSize))
+            {
+                addDelay = Time.time + 0.2f;
+                currentPlayer.GetComponent<Player>().trashQty = currentPlayer.GetComponent<Player>().trashQty - (int)(trashInAmmo * burstSize);
+                this.currentTrash += (trashInAmmo * burstSize);
+            }
+        }
+    }
+
     void setTarget()
     {
         RaycastHit hit;
         Ray ray = new Ray(playerCameraTransform.position, playerCameraTransform.forward);
-
         if (Physics.Raycast(ray, out hit, maxTargetDistance, planetLayer))
         {
             if (autoTarget != null)
@@ -138,14 +165,23 @@ public class MonkeyWeapon : WeaponScript
                 Destroy(autoTarget);
             }
             GameObject hitObject = hit.collider.gameObject;
-            while (!hitObject.name.Contains("Planet"))
+            //Try to find the planet
+            for (int i = 0; i < 5; i++)
             {
+                if (hitObject.name.Contains("Planet"))
+                {
+                    break;
+                }
                 hitObject = hitObject.transform.parent.gameObject;
             }
-            Vector3 hitPoint = hit.point;
-            GameObject newObject = Instantiate(autoTarget, hitPoint, Quaternion.identity);
-            newObject.transform.SetParent(hitObject.transform);
-            autoTarget = newObject;
+            if (hitObject.name.Contains("Planet"))
+            {
+                Vector3 hitPoint = hit.point;
+                GameObject newTarget = new GameObject("MonkeyTarget");
+                newTarget.transform.position = hitPoint;
+                newTarget.transform.SetParent(hitObject.transform);
+                this.autoTarget = newTarget;
+            }
         }
     }
 
@@ -172,6 +208,19 @@ public class MonkeyWeapon : WeaponScript
         currentTrash -= trashInAmmo;
         GameObject projectile = Instantiate(projectilePrefab, cameraAnchor.position, Quaternion.identity);//Instantiate(this.projectilePrefab, this.cameraAnchor);
         //projectile.GetComponent<ProjectileMotion>().activateProjectile(this.originPlanet, this.targetPlanet);
+        ProjectileMotion motionScript = projectile.GetComponent<ProjectileMotion>();
+        if (motionScript is SuperProjectileMotion superMotionScript)
+        {
+            if (autoTarget == null)
+            {
+                superMotionScript.activateProjectile(null);
+            }
+            else
+            {
+                superMotionScript.activateProjectile(autoTarget.transform);
+            }
+
+        }
 
         Rigidbody projectileRigidbody = projectile.GetComponent<Rigidbody>();
         Vector3 direction = autoTarget.transform.position - projectile.transform.position;

@@ -56,15 +56,9 @@ public class PlayerInteraction : MonoBehaviour
             // Create a ray from the camera's position in the forward direction of the camera
             Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log("Unchecked " + hit.collider.gameObject.name);
-            }
-
             // Perform the raycast and check if we hit something
             if (Physics.Raycast(ray, out hit, interactDistance, interactables))
             {
-                Debug.Log("Hit object " + hit.collider.gameObject.name);
                 if (hit.collider.gameObject.tag == "Weapon")
                 {
                     WeaponScript weapon = hit.collider.gameObject.GetComponent<WeaponScript>();

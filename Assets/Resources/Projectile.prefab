@@ -162,5 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1062a09a5afb7144c9cb50521101ef93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerSpeed: 1
+  damage: 1
   timeAfterCollision: 3
+  planetMeshLayer:
+    serializedVersion: 2
+    m_Bits: 8
