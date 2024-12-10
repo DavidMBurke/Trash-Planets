@@ -396,11 +396,22 @@
                 },
                 {
                     "name": "",
-                    "id": "c012eeb1-5723-4290-ab18-fb01cab49f1e",
-                    "path": "<Gamepad>/leftTrigger",
+                    "id": "d41c8b61-fbb8-44f4-8324-46988f71d2ca",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad;Joystick",
+                    "groups": "Gamepad",
+                    "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0a2746e8-ac21-4a7d-95a1-14ee0bdbf57f",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Exit",
                     "isComposite": false,
                     "isPartOfComposite": false

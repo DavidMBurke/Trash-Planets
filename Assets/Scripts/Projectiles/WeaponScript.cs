@@ -95,7 +95,7 @@ public class WeaponScript : Building
 
         playerOutputCamera.GetComponent<FirstPersonCamera>().setCostsGUI((trashInAmmo * burstSize).ToString(), "-");
 
-        interactCooldown = Time.time + 6;
+        interactCooldown = Time.time + 2;
         playerActive = true;
     }
 
@@ -115,7 +115,7 @@ public class WeaponScript : Building
 
         playerOutputCamera.GetComponent<FirstPersonCamera>().setCostsGUI("-", "-");
 
-        interactCooldown = Time.time + 6;
+        interactCooldown = Time.time + 2;
         playerActive = false;
 
         currentPlayer = null;
