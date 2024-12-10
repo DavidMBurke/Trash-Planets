@@ -23,12 +23,12 @@ public class ScorebarLogic : MonoBehaviour
         int smallerCount = Mathf.Min(P1Trash, P2Trash);
         if (smallerCount == P1Trash)
         {
-            P1Score = 250;
-            P2Score = 250 + P2Trash - P1Trash;
+            P1Score = 100;
+            P2Score = 100 + P2Trash - P1Trash;
         } else
         {
-            P2Score = 250;
-            P1Score = 250 + P1Trash - P2Trash;
+            P2Score = 100;
+            P1Score = 100 + P1Trash - P2Trash;
         }
         P1ratio = (float) P1Score/(P1Score + P2Score);
         P2ratio = (float) P2Score/(P1Score + P2Score);

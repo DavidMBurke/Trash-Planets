@@ -1725,7 +1725,7 @@ MonoBehaviour:
   maxTrash: 100
   minedTrash: 0
   storedTrash: 0
-  collectionTime: 5
+  collectionTime: 3
   elapsedTime: 0
   radius: 10
   drillsound: {fileID: -8279273104199822018}
