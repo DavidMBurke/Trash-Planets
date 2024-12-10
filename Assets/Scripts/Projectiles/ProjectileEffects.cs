@@ -22,7 +22,7 @@ public class ProjectileEffects : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startup = Time.time + 0.5f;
+        startup = Time.time + 3f;
         active = true;
         collidedObjects = new HashSet<GameObject>();
 }
@@ -75,13 +75,16 @@ public class ProjectileEffects : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Drill") || collision.gameObject.CompareTag("Refinery"))
             {
-
+                Building buildingScript = collision.gameObject.GetComponent<Building>();
+                buildingScript.applyDamage(damage);
+                /*
                 if (!collidedObjects.Contains(collision.gameObject))
                 {
                     collidedObjects.Add(collision.gameObject);
                     Building buildingScript = collision.gameObject.GetComponent<Building>();
                     buildingScript.applyDamage(damage);
                 }
+                */
             }
 
             if (!dying)
